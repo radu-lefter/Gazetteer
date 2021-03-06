@@ -18,10 +18,12 @@
 </head>
 <body>
     <nav>
-        <form action="">
-            <input type="text">
-            <input type="submit" value="Search"> 
-        </form>
+      
+        <select id="countryDropdown" name="country">
+        </select>
+        <button id="selectButton">submit</button>
+      
+      
     </nav>
 
     
@@ -46,8 +48,12 @@
         <!-- Modal body -->
         <div class="modal-body">
           <h1 id="countryName"></h1>
-          <p id="population"></p>
           <p id="capital"></p>
+          <p id="continent"></p>
+          <p id="population"></p>
+          <p id="language"></p>
+          <p id="currency"></p>
+          <p id="flag">Flag: <img id="flagImg" src="" alt=""></p>
           
         </div>
         

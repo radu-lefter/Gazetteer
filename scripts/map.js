@@ -1,11 +1,25 @@
 
-//var data = require('countryBorders.geo.json');
+//populate the select list
 
-//import * as data from 'countryBorders.geo.json';
+let dropdown = $('#countryDropdown');
+
+dropdown.empty();
+
+dropdown.append('<option selected="true" value="dummy" disabled>Choose country</option>');
+dropdown.prop('selectedIndex', 0);
+
+const url = 'countryBorders.geo.json';
 
 
+$.getJSON(url, function (data) {
+  $.each(data.features, function (key, entry) {
+    dropdown.append($('<option></option>').attr('value', entry.properties.iso_a3).text(entry.properties.name));
+  })
+});
 
-var mymap = L.map('mapId').setView([51.505, -0.09], 3);
+
+//create the map
+var mymap = L.map('mapId').setView([51.505, -0.09], 4);
 
 L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
 	maxZoom: 17,
@@ -14,6 +28,137 @@ L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
 
 
 
+//submit button
+//var selected = $('#countryDropdown option:selected').val();
+var selected = $('select option:selected').val();
+
+console.log(selected);
+
+var aBtn = document.getElementById("selectButton");
+aBtn.onclick=function(){
+    selected = $('select option:selected').val();
+    selectCountry(selected);
+};
+
+
+//get polyline
+//let coordinates;
+
+function selectCountry(selected) {
+    $.ajax({
+        dataType: "json",
+        url: "countriesLatLong.json",
+        success: function (data) {
+            //console.log(data);
+           
+
+            var result = data.ref_country_codes.filter(obj => {
+                return obj.alpha3 === selected;
+              });
+            
+
+            console.log(result);
+
+            coordinates = [result[0].latitude, result[0].longitude];
+
+
+            console.log(coordinates);
+
+             
+            $.ajax({
+                url: "scripts/api.php",
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    country: selected
+                },
+                success: function(result) {
+        
+                    //console.log(result);
+        
+                    if (result.status.name == "ok") {
+        
+                        $('#countryName').html(result['data']["name"]);
+                        $('#capital').html("Capital: " + result['data']["capital"]);
+                        $('#continent').html("Continent: " + result['data']["subregion"]);
+                        $('#population').html("Population: " + result['data']["population"]);
+                        $('#language').html("Language: " + result['data']["languages"][0]["name"]);
+                        $('#currency').html("Currency: " + result['data']["currencies"][0]["name"]);
+                        $('#flagImg').attr({src: result['data']['flag'], style: "width:30px"});
+        
+                        
+                        
+                        //mymap.setView([81, -0.09], 4);
+                       mymap.setView(coordinates, 7); 
+                    }
+        
+                    
+                
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    // your error code
+                    console.log("An error has occured!");
+                }
+            }); 
+        
+            $('#myModal').modal('show');
+        },
+    }).fail(function () {});
+};
+
+//getLatLong('HRV');
+//let coord = getLatLong(selected);
+//let lat, long;
+//[lat, long] = getLatLong(selected);
+
+
+//select
+// function selectCountry(selected){
+//     $.ajax({
+//         url: "scripts/api.php",
+//         type: 'POST',
+//         dataType: 'json',
+//         data: {
+//             country: selected
+//         },
+//         success: function(result) {
+
+//             //console.log(result);
+
+//             if (result.status.name == "ok") {
+
+//                 $('#countryName').html(result['data']["name"]);
+//                 $('#capital').html("Capital: " + result['data']["capital"]);
+//                 $('#continent').html("Continent: " + result['data']["subregion"]);
+//                 $('#population').html("Population: " + result['data']["population"]);
+//                 $('#language').html("Language: " + result['data']["languages"][0]["name"]);
+//                 $('#currency').html("Currency: " + result['data']["currencies"][0]["name"]);
+//                 $('#flagImg').attr({src: result['data']['flag'], style: "width:30px"});
+
+                
+                
+//                 //mymap.setView([81, -0.09], 4);
+//                mymap.setView(getLatLong(selected), 7);
+//             }
+
+            
+        
+//         },
+//         error: function(jqXHR, textStatus, errorThrown) {
+//             // your error code
+//             console.log("An error has occured!");
+//         }
+//     }); 
+
+//     $('#myModal').modal('show');
+
+// }
+
+
+
+
+
+//populate map with countries
 $.ajax({
     dataType: "json",
     url: "countryBorders.geo.json",
@@ -29,9 +174,9 @@ $.ajax({
         
             layer.setStyle({
                 weight: 5,
-                color: '#666',
+                color: '#f4c324',
                 dashArray: '',
-                fillOpacity: 0.7
+                fillOpacity: 0.1
             });
         
             if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
@@ -45,23 +190,30 @@ $.ajax({
         
         function getCountryInfo(e) {
             mymap.fitBounds(e.target.getBounds()); // zoom to feature
-            console.log(e.target.feature.properties.name);
+            console.log(e.target);
+           
 
+            //populate modal with country info
             $.ajax({
                 url: "scripts/api.php",
                 type: 'POST',
                 dataType: 'json',
                 data: {
-                    country: e.target.feature.properties.name
+                    country: e.target.feature.properties.iso_a3
                 },
                 success: function(result) {
     
-                    console.log(result);
+                    //console.log(result);
     
                     if (result.status.name == "ok") {
     
-                        $('#countryName').html(result['data'][0]["name"]);
-                        $('#population').html("Population: " + result['data'][0]["population"]);
+                        $('#countryName').html(result['data']["name"]);
+                        $('#capital').html("Capital: " + result['data']["capital"]);
+                        $('#continent').html("Continent: " + result['data']["subregion"]);
+                        $('#population').html("Population: " + result['data']["population"]);
+                        $('#language').html("Language: " + result['data']["languages"][0]["name"]);
+                        $('#currency').html("Currency: " + result['data']["currencies"][0]["name"]);
+                        $('#flagImg').attr({src: result['data']['flag'], style: "width:30px"});
                         
                         
                     }
@@ -73,15 +225,21 @@ $.ajax({
                 }
             }); 
 
+        
+
             $('#myModal').modal('show');
 
         }
+
+        
+
         
         function onEachFeature(feature, layer) {
             layer.on({
                 mouseover: highlightFeature,
                 mouseout: resetHighlight,
                 click: getCountryInfo
+                
             });
         }
         

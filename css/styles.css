@@ -3,6 +3,11 @@
     width: 100%;
  }
 
+ #flagImg {
+    width: 100%;
+    height: auto;
+ }
+
 
 .modal.left .modal-dialog {
     position: fixed;
