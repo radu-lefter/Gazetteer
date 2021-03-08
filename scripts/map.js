@@ -1,12 +1,4 @@
 
-//get user location
-navigator.geolocation.getCurrentPosition(showPosition);
-function showPosition(position) {
-    console.log(position.coords.latitude);
-    console.log(position.coords.longitude);
-    
-  }
-
 
 
 //populate the select list
@@ -46,7 +38,28 @@ let countries = [];
 
 
 //create the map
-var mymap = L.map('mapId').setView([51.505, -0.09], 4);
+//middle of world [40.0022, 78.4558]
+
+var lat = 40.0022;
+var long = 78.4558;
+
+var mymap = L.map('mapId').setView([lat, long], 2);
+
+
+
+//get coordinates of the user
+navigator.geolocation.getCurrentPosition(showPosition);
+function showPosition(position) {
+    console.log(position.coords.latitude);
+    console.log(position.coords.longitude);
+    lat=position.coords.latitude;
+    long=position.coords.longitude;
+
+    mymap.setView([lat, long], 4);
+}
+
+  
+
 
 L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
 	maxZoom: 17,

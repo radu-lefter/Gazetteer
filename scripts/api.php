@@ -3,6 +3,8 @@
 	$executionStartTime = microtime(true) / 1000;
 
     //$url = 'https://restcountries.eu/rest/v2/name/'. $_REQUEST['country'];
+
+	//$url_unsplash = "https://api.unsplash.com/search/photos?query={$_REQUEST['country']}";
 	
 	$url = "https://restcountries.eu/rest/v2/alpha/{$_REQUEST['country']}";
 
