@@ -69,13 +69,16 @@ L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
 
 //submit button
 
-var selected = $('select option:selected').val();
+//var country = $('select option:selected').text();
+
+//var country_iso = $('select option:selected').val();
 
 
 var aBtn = document.getElementById("selectButton");
 aBtn.onclick=function(){
-    selected = $('select option:selected').val();
-    selectCountry(selected);
+    let country = $('select option:selected').text();
+    let country_iso = $('select option:selected').val();
+    selectCountry(country, country_iso);
 };
 
 
@@ -83,14 +86,16 @@ aBtn.onclick=function(){
 
 var geoson;
 
-function selectCountry(selected) {
+function selectCountry(country, country_iso) {
+    console.log(country);
+console.log(country_iso);
     $.ajax({
         dataType: "json",
         url: "countryBorders.geo.json",
         success: function (data) {
 
             var result = data.features.filter(obj => {
-                       return obj.properties.iso_a3 === selected;
+                       return obj.properties.iso_a3 === country_iso;
                   });
 
             var myStyle = {
@@ -108,29 +113,30 @@ function selectCountry(selected) {
     
              
             $.ajax({
-                url: "scripts/api.php",
+                url: "scripts/curl.php",
                 type: 'POST',
                 dataType: 'json',
                 data: {
-                    country: selected
+                    country_iso: country_iso, 
+                    country: country
                 },
                 success: function(result) {
         
-                    //console.log(result);
+                    console.log(result);
         
                     if (result.status.name == "ok") {
         
-                        $('#countryName').html(result['data']["name"]);
-                        $('#capital').html("Capital: " + result['data']["capital"]);
-                        $('#continent').html("Continent: " + result['data']["subregion"]);
-                        $('#population').html("Population: " + result['data']["population"]);
-                        $('#language').html("Language: " + result['data']["languages"][0]["name"]);
-                        $('#currency').html("Currency: " + result['data']["currencies"][0]["name"]);
-                        $('#flagImg').attr({src: result['data']['flag'], style: "width:30px"});
+                        $('#countryName').html(result['data']['country']["name"]);
+                        $('#capital').html("Capital: " + result['data']['country']["capital"]);
+                        $('#continent').html("Continent: " + result['data']['country']["subregion"]);
+                        $('#population').html("Population: " + result['data']['country']["population"]);
+                        $('#language').html("Language: " + result['data']['country']["languages"][0]["name"]);
+                        $('#currency').html("Currency: " + result['data']['country']["currencies"][0]["name"]);
+                        $('#flagImg').attr({src: result['data']['country']['flag'], style: "width:30px"});
+                        $('#wiki').html(result['data']['wiki']['extract']);
+                        $('#photoImg').attr({src: result['data']['photo']['results'][0]['urls']['small']});
         
-                        
 
-                   
                     }
         
                     
