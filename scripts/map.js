@@ -1,6 +1,4 @@
 
-
-
 //populate the select list
 
 let dropdown = $('#countryDropdown');
@@ -69,10 +67,6 @@ L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
 
 //submit button
 
-//var country = $('select option:selected').text();
-
-//var country_iso = $('select option:selected').val();
-
 
 var aBtn = document.getElementById("selectButton");
 aBtn.onclick=function(){
@@ -87,8 +81,10 @@ aBtn.onclick=function(){
 var geoson;
 
 function selectCountry(country, country_iso) {
+
+
     console.log(country);
-console.log(country_iso);
+    console.log(country_iso);
     $.ajax({
         dataType: "json",
         url: "countryBorders.geo.json",
@@ -125,6 +121,8 @@ console.log(country_iso);
                     console.log(result);
         
                     if (result.status.name == "ok") {
+
+                        let rand = Math.floor(Math.random() * 10);
         
                         $('#countryName').html(result['data']['country']["name"]);
                         $('#capital').html("Capital: " + result['data']['country']["capital"]);
@@ -134,8 +132,18 @@ console.log(country_iso);
                         $('#currency').html("Currency: " + result['data']['country']["currencies"][0]["name"]);
                         $('#flagImg').attr({src: result['data']['country']['flag'], style: "width:30px"});
                         $('#wiki').html(result['data']['wiki']['extract']);
-                        $('#photoImg').attr({src: result['data']['photo']['results'][0]['urls']['small']});
-        
+                        $('#photoImg').attr({src: result['data']['photo']['results'][rand]['urls']['small']});
+                        $('#news1').attr({href: result['data']['news']['articles'][0]['url']});
+                        $('#news1').html(result['data']['news']['articles'][0]['description']);
+                        $('#news2').attr({href: result['data']['news']['articles'][1]['url']});
+                        $('#news2').html(result['data']['news']['articles'][1]['description']);
+                        $('#news3').attr({href: result['data']['news']['articles'][2]['url']});
+                        $('#news3').html(result['data']['news']['articles'][2]['description']);
+                        $('#iframe').attr({src: 'https://www.youtube.com/embed/'+ result['data']['youtube']['items'][0]['id']['videoId']});
+                        $('#cases').html("Total cases: " + result['data']['covid']["cases"]);
+                        $('#recovered').html("Total recovered: " + result['data']['covid']["recovered"]);
+                        $('#deaths').html("Total deaths: " + result['data']['covid']["deaths"]);
+                        $('#deathsToday').html("Deaths today: " + result['data']['covid']["todayDeaths"]);
 
                     }
         
