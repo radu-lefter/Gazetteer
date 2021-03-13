@@ -41,20 +41,24 @@ let countries = [];
 var lat = 40.0022;
 var long = 78.4558;
 
-var mymap = L.map('mapId').setView([lat, long], 2);
+var mymap = L.map('mapId').fitWorld();
+
+mymap.locate({setView: true, maxZoom: 5});
 
 
 
 //get coordinates of the user
-navigator.geolocation.getCurrentPosition(showPosition);
-function showPosition(position) {
-    console.log(position.coords.latitude);
-    console.log(position.coords.longitude);
-    lat=position.coords.latitude;
-    long=position.coords.longitude;
+// navigator.geolocation.getCurrentPosition(showPosition);
 
-    mymap.setView([lat, long], 4);
-}
+
+// function showPosition(position) {
+//     console.log(position.coords.latitude);
+//     console.log(position.coords.longitude);
+//     lat=position.coords.latitude;
+//     long=position.coords.longitude;
+
+//     mymap.setView([lat, long], 4);
+// }
 
   
 
@@ -65,15 +69,14 @@ L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
 }).addTo(mymap);
 
 
-//submit button
 
 
-var aBtn = document.getElementById("selectButton");
-aBtn.onclick=function(){
+$('#countryDropdown').change(function(){
     let country = $('select option:selected').text();
     let country_iso = $('select option:selected').val();
-    selectCountry(country, country_iso);
-};
+    selectCountry(country, country_iso)
+    
+});
 
 
 //Adding border around each country and fetching data
@@ -133,12 +136,12 @@ function selectCountry(country, country_iso) {
                         $('#flagImg').attr({src: result['data']['country']['flag'], style: "width:30px"});
                         $('#wiki').html(result['data']['wiki']['extract']);
                         $('#photoImg').attr({src: result['data']['photo']['results'][rand]['urls']['small']});
-                        $('#news1').attr({href: result['data']['news']['articles'][0]['url']});
-                        $('#news1').html(result['data']['news']['articles'][0]['description']);
-                        $('#news2').attr({href: result['data']['news']['articles'][1]['url']});
-                        $('#news2').html(result['data']['news']['articles'][1]['description']);
-                        $('#news3').attr({href: result['data']['news']['articles'][2]['url']});
-                        $('#news3').html(result['data']['news']['articles'][2]['description']);
+                        $('#news1').attr({href: result['data']['news']['articles'][4]['url']});
+                        $('#news1').html(result['data']['news']['articles'][4]['description']);
+                        $('#news2').attr({href: result['data']['news']['articles'][7]['url']});
+                        $('#news2').html(result['data']['news']['articles'][7]['description']);
+                        $('#news3').attr({href: result['data']['news']['articles'][10]['url']});
+                        $('#news3').html(result['data']['news']['articles'][10]['description']);
                         $('#iframe').attr({src: 'https://www.youtube.com/embed/'+ result['data']['youtube']['items'][0]['id']['videoId']});
                         $('#cases').html("Total cases: " + result['data']['covid']["cases"]);
                         $('#recovered').html("Total recovered: " + result['data']['covid']["recovered"]);

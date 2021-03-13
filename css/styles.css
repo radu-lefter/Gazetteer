@@ -1,7 +1,27 @@
-#mapId { 
+body {
+    padding: 0;
+    margin: 0;
+}
+
+
+html,body, #wrapper {
     height: 100%;
-    width: 100%;
- }
+    width: 100vw;
+}
+
+#mapId{ 
+    height: 90%;
+    width: 100vw;
+}
+
+nav{
+    height: 10%;
+    width: 100vw;
+}
+
+
+
+
 
  #flagImg {
     width: 100%;
