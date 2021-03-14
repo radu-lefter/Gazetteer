@@ -2,7 +2,8 @@
 <?php
 
 
-$country = preg_replace('/\s+/', '_', $_REQUEST['country']);
+$country_wiki = preg_replace('/\s+/', '_', $_REQUEST['country']);
+$country = preg_replace('/\s+/', '-', $_REQUEST['country']);
 $date = date("Y-m-d", strtotime("-1 months"));
 
 $executionStartTime = microtime(true) / 1000;
@@ -10,7 +11,7 @@ $executionStartTime = microtime(true) / 1000;
 	
 	$url1 = "https://restcountries.eu/rest/v2/alpha/{$_REQUEST['country_iso']}";
 
-    $url2 = "https://en.wikipedia.org/api/rest_v1/page/summary/{$country}";
+    $url2 = "https://en.wikipedia.org/api/rest_v1/page/summary/{$country_wiki}";
 
     $url3 = "https://api.unsplash.com/search/photos?query={$country}&client_id=4BysAZ8jjWLhxY7QeQW2Yk7bhXnnlf99uTY0s0ttQTU";
 
@@ -18,7 +19,7 @@ $executionStartTime = microtime(true) / 1000;
 
 	$url5 = "https://youtube.googleapis.com/youtube/v3/search?part=snippet&channelId=UCmmPgObSUPw1HL2lq6H4ffA&q={$country}&key=AIzaSyCvsp8SVAs7-J9mONpzI9cnqvhn-1s8GB4";
 
-	$url6 = "https://corona.lmao.ninja/v2/countries/$country?yesterday&strict&query";
+	$url6 = "https://corona.lmao.ninja/v2/countries/{$_REQUEST['country']}?yesterday&strict&query";
 
 
 	$ch1 = curl_init();
