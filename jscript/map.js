@@ -1,3 +1,8 @@
+//Preloader
+// $(window).on('load', function () { 
+//        if ($('#preloader').length) { 
+//                 $('#preloader').delay(100).fadeOut('slow', function () {        $(this).remove();      });    }});
+
 
 //populate the select list
 
@@ -37,7 +42,7 @@ $.ajax({
         success: function (response) {
 
             var output = $.parseJSON(response);
-            console.log(output);
+            //console.log(output);
 
             if(response){
                 for (let item of output) {
@@ -96,7 +101,7 @@ function selectCountry(country, country_iso) {
         success: function (response) {
 
             var output = $.parseJSON(response);
-            console.log(output);
+            //console.log(output);
 
             var result = output.filter(obj => {
                        return obj.properties.iso_a2 === country_iso;
@@ -140,8 +145,10 @@ function selectCountry(country, country_iso) {
                         $('#continent').html("Continent: " + result['data']['country']["subregion"]);
                         $('#population').html("Population: " + result['data']['country']["population"]);
                         $('#language').html("Language: " + result['data']['country']["languages"][0]["name"]);
+                        $('#area').html("Area: " + result['data']['country']["area"] + " km<sup>2</sup>")
                         $('#currency').html("Currency: " + result['data']['country']["currencies"][0]["name"]);
                         $('#flagImg').attr({src: result['data']['country']['flag'], style: "width:30px"});
+                        $('#weather').html("Temperature: " + result['data']['weather']['main']['temp'] + "&#8451; " + result['data']['weather']['weather'][0]['description']);
                         $('#wiki').html(result['data']['wiki']['extract']);
                         $('#photoImg').attr({src: result['data']['photo']['results'][rand_photo]['urls']['small']});
                         $('#news1').attr({href: result['data']['news']['articles'][rand_news1]['url']});
