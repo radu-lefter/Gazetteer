@@ -11,14 +11,24 @@ html,body, #wrapper {
 }
 
 #mapId{ 
-    height: 90%;
+    height: 100%;
     width: 100vw;
+    position: relative;
+    z-index: 1;
 }
 
-nav{
+#countryDropdown{
+    position: absolute;
+    z-index: 99999;
+    top:15px;
+    left: 50px;
+    
+}
+
+/* nav{
     height: 10%;
     width: 100vw;
-}
+} */
 
 
  #flagImg {
@@ -29,6 +39,7 @@ nav{
  #photoImg{
     width: 385px;
 }
+
 
 
 .modal.left .modal-dialog {

@@ -70,14 +70,15 @@ function selectCountry(country, country_iso) {
     console.log(country_iso);
     $.ajax({
         url: "php/getCountriesBorders.php",
+        type: 'POST',
+        data: {
+            country_iso: country_iso
+        },
         success: function (response) {
 
-            var output = $.parseJSON(response);
-            //console.log(output);
-
-            var result = output.filter(obj => {
-                       return obj.properties.iso_a2 === country_iso;
-                  });
+            
+            var result = $.parseJSON(response);
+            console.log(result);
 
             var myStyle = {
                 "color": "#224de6",
