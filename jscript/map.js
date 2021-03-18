@@ -62,6 +62,8 @@ $('#countryDropdown').change(function(){
 //Adding border around each country and fetching data
 
 var geoson;
+var markers = L.layerGroup().addTo(mymap);
+
 
 function selectCountry(country, country_iso) {
 
@@ -78,6 +80,7 @@ function selectCountry(country, country_iso) {
 
             
             var result = $.parseJSON(response);
+           
             console.log(result);
 
             var myStyle = {
@@ -86,13 +89,25 @@ function selectCountry(country, country_iso) {
                 "opacity": 0.9
             };
 
+            
+            markers.clearLayers();
+           
 
             if(geoson){geoson.clearLayers();}
-            geoson = L.geoJSON(result, {style: myStyle}).addTo(mymap);
+            geoson = L.geoJSON(result[0], {style: myStyle}).addTo(mymap);
             mymap.fitBounds(geoson.getBounds());
 
 
-    
+            function populate(){
+                for (let item of result[1]) {
+                    var marker = L.marker([item['lat'], item['lng']]).bindPopup(`Name: ${item['city']} Population: ${item['population']}`);
+                    markers.addLayer(marker);
+                }  
+            }
+
+            populate();
+            
+            
              
             $.ajax({
                 url: "php/getAPIData.php",
@@ -120,8 +135,11 @@ function selectCountry(country, country_iso) {
                         $('#language').html("Language: " + result['data']['country']["languages"][0]["name"]);
                         $('#area').html("Area: " + result['data']['country']["area"] + " km<sup>2</sup>")
                         $('#currency').html("Currency: " + result['data']['country']["currencies"][0]["name"]);
+                        $('#exchange').html("One USD is worth "+ result['data']['exchange']['rates'][result['data']['country']["currencies"][0]["code"]] +" "+ result['data']['country']["currencies"][0]["symbol"]);
                         $('#flagImg').attr({src: result['data']['country']['flag'], style: "width:30px"});
                         $('#weather').html("Temperature: " + result['data']['weather']['main']['temp'] + "&#8451; " + result['data']['weather']['weather'][0]['description']);
+                        $('#phone').html("Phone prefix: " + result['data']['country']["callingCodes"][0]);
+                        $('#gini').html("Gini coefficient: " + result['data']['country']["gini"]);
                         $('#wiki').html(result['data']['wiki']['extract']);
                         $('#photoImg').attr({src: result['data']['photo']['results'][rand_photo]['urls']['small']});
                         
@@ -153,6 +171,11 @@ function selectCountry(country, country_iso) {
                         }else{
                             $('#news').html("Sorry, news service not available at the moment.")
                         }
+                        
+                        //var mark = L.marker([result['data']['opencage']['results'][0]['geometry']['lat'], result['data']['opencage']['results'][0]['geometry']['lng']]).addTo(mymap).bindPopup(`Capital city of ${result['data']['country']["capital"]}`);
+
+
+                        
                         
                     }
   

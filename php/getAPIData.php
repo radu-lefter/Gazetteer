@@ -26,7 +26,11 @@ $executionStartTime = microtime(true) / 1000;
 
 	$url6 = "https://corona.lmao.ninja/v2/countries/{$_REQUEST['country']}?yesterday&strict&query";
 
-	$url7 ="https://api.openweathermap.org/data/2.5/weather?q=$capital,{$_REQUEST['country_iso']}&units=metric&APPID=cf68da85a38201a07b3983c702e86457";
+	$url7 = "https://api.openweathermap.org/data/2.5/weather?q=$capital,{$_REQUEST['country_iso']}&units=metric&APPID=cf68da85a38201a07b3983c702e86457";
+
+    $url8 = "https://openexchangerates.org/api/latest.json?app_id=8ac98ac2eff345c38601e892f6a1b191";
+
+    $url9 = "https://api.opencagedata.com/geocode/v1/json?q=$capital&key=68d11922aad3402caf0baf9b8377a56b";
 
 
 	$ch1 = curl_init();
@@ -64,6 +68,16 @@ $executionStartTime = microtime(true) / 1000;
 	curl_setopt($ch7, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch7, CURLOPT_URL,$url7);
 
+	$ch8 = curl_init();
+	curl_setopt($ch8, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch8, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch8, CURLOPT_URL,$url8);
+
+	$ch9 = curl_init();
+	curl_setopt($ch9, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch9, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch9, CURLOPT_URL,$url9);
+
 
 	$result1=curl_exec($ch1);
     $result2=curl_exec($ch2);
@@ -72,6 +86,8 @@ $executionStartTime = microtime(true) / 1000;
 	$result5=curl_exec($ch5);
 	$result6=curl_exec($ch6);
 	$result7=curl_exec($ch7);
+	$result8=curl_exec($ch8);
+	$result9=curl_exec($ch9);
 
 	curl_close($ch1);
     curl_close($ch2);
@@ -80,6 +96,8 @@ $executionStartTime = microtime(true) / 1000;
 	curl_close($ch5);
 	curl_close($ch6);
 	curl_close($ch7);
+	curl_close($ch8);
+	curl_close($ch9);
 
 	$decode1 = json_decode($result1,true);	
     $decode2 = json_decode($result2,true);
@@ -88,6 +106,8 @@ $executionStartTime = microtime(true) / 1000;
 	$decode5 = json_decode($result5,true);
 	$decode6 = json_decode($result6,true);
 	$decode7 = json_decode($result7,true);
+	$decode8 = json_decode($result8,true);
+	$decode9 = json_decode($result9,true);
 
 	$output['status']['code'] = "200";
 	$output['status']['name'] = "ok";
@@ -100,6 +120,8 @@ $executionStartTime = microtime(true) / 1000;
 	$output['data']['youtube'] = $decode5;
 	$output['data']['covid'] = $decode6;
 	$output['data']['weather'] = $decode7;
+	$output['data']['exchange'] = $decode8;
+	$output['data']['opencage'] = $decode9;
     
 	
 	header('Content-Type: application/json; charset=UTF-8');
