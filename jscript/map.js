@@ -11,7 +11,7 @@ dropdown.prop('selectedIndex', 0);
 
 $.ajax({
         type: 'GET',
-        url: "php/getCountriesData.php",
+        url: "php/getCountriesNames.php",
         success: function (response) {
 
             var output = $.parseJSON(response);
@@ -63,18 +63,21 @@ $('#countryDropdown').change(function(){
 
 var geoson;
 var markers = L.layerGroup().addTo(mymap);
+var nf = Intl.NumberFormat();
+
 
 
 function selectCountry(country, country_iso) {
 
-
+    $('#loading').show();
     console.log(country);
     console.log(country_iso);
     $.ajax({
-        url: "php/getCountriesBorders.php",
+        url: "php/getCountriesData.php",
         type: 'POST',
         data: {
-            country_iso: country_iso
+            country_iso: country_iso,
+            country: country
         },
         success: function (response) {
 
@@ -97,17 +100,74 @@ function selectCountry(country, country_iso) {
             geoson = L.geoJSON(result[0], {style: myStyle}).addTo(mymap);
             mymap.fitBounds(geoson.getBounds());
 
+            var greenIcon = new L.Icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [35, 51],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+              });
+
+            var redIcon = new L.Icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [20, 33],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+              });
+            
+            var goldIcon = new L.Icon({
+                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-gold.png',
+                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                iconSize: [20, 33],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                shadowSize: [41, 41]
+              });
+
+              
+
+            var marker;
 
             function populate(){
                 for (let item of result[1]) {
-                    var marker = L.marker([item['lat'], item['lng']]).bindPopup(`Name: ${item['city']} Population: ${item['population']}`);
+                    if(item['capital']=="primary"){
+                        marker = L.marker([item['lat'], item['lng']], {icon: greenIcon}).bindPopup(`This is a capital city! <br> Name: ${item['city']} <br> Population: ${nf.format(item['population'])}`);
+                        markers.addLayer(marker);
+                    }else{
+                        marker = L.marker([item['lat'], item['lng']], {icon: redIcon}).bindPopup(`Name: ${item['city']} <br> Population: ${nf.format(item['population'])}`);
+                        markers.addLayer(marker);
+                    }
+                    
+                } 
+                for (let item of result[2]) {
+                    marker = L.marker([item['properties']['latitude'], item['properties']['longitude']], {icon: goldIcon}).bindPopup(`Name: ${item['properties']['name_en']} <br> Description: ${item['properties']['short_description_en']}`);
                     markers.addLayer(marker);
-                }  
+                }
             }
 
             populate();
-            
-            
+
+            //creating a list of the major cities in modal
+            var list =  document.getElementById('cities');
+            list.innerHTML = "";
+            for (var i = 0; i < result[1].length; i++) {
+                li = document.createElement('li');
+                li.innerHTML = result[1][i]['city'];
+                list.appendChild(li);
+            }
+
+            //list of the unesco sites
+            var list2 =  document.getElementById('usites');
+            list2.innerHTML = "";
+            for (var i = 0; i < result[2].length; i++) {
+                li = document.createElement('li');
+                li.innerHTML = result[2][i]['properties']['name_en'];
+                list2.appendChild(li);
+            }
+
              
             $.ajax({
                 url: "php/getAPIData.php",
@@ -120,8 +180,11 @@ function selectCountry(country, country_iso) {
                 success: function(result) {
         
                     console.log(result);
-        
-                    if (result.status.name == "ok") {
+                    
+
+                    if(result.status.name == "ok"){
+                        
+                    
 
                         let rand_photo = Math.floor(Math.random() * 10);
                         let rand_news1 = Math.floor(Math.random() * 20);
@@ -131,15 +194,38 @@ function selectCountry(country, country_iso) {
                         $('#countryName').html(result['data']['country']["name"]);
                         $('#capital').html("Capital: " + result['data']['country']["capital"]);
                         $('#continent').html("Continent: " + result['data']['country']["subregion"]);
-                        $('#population').html("Population: " + result['data']['country']["population"]);
+                        $('#population').html("Population: " + nf.format(result['data']['country']["population"]));
                         $('#language').html("Language: " + result['data']['country']["languages"][0]["name"]);
-                        $('#area').html("Area: " + result['data']['country']["area"] + " km<sup>2</sup>")
+                        $('#area').html("Area: " + nf.format(result['data']['country']["area"]) + " km<sup>2</sup>");
                         $('#currency').html("Currency: " + result['data']['country']["currencies"][0]["name"]);
-                        $('#exchange').html("One USD is worth "+ result['data']['exchange']['rates'][result['data']['country']["currencies"][0]["code"]] +" "+ result['data']['country']["currencies"][0]["symbol"]);
+                        $('#exchange').html("One USD is worth "+ result['data']['exchange']['rates'][result['data']['country']["currencies"][0]["code"]] +" "+ result['data']['country']["currencies"][0]["code"]);
                         $('#flagImg').attr({src: result['data']['country']['flag'], style: "width:30px"});
                         $('#weather').html("Temperature: " + result['data']['weather']['main']['temp'] + "&#8451; " + result['data']['weather']['weather'][0]['description']);
                         $('#phone').html("Phone prefix: " + result['data']['country']["callingCodes"][0]);
                         $('#gini').html("Gini coefficient: " + result['data']['country']["gini"]);
+
+                        if(result['data']['opencage']){
+                        $('#driving').html("Driving on the "+ result['data']['opencage']['results'][0]['annotations']['roadinfo']['drive_on']+" side");
+                        $('#localTime').html("Local time in the capital is "+ new Date(new Date().getTime() + result['data']['opencage']['results'][0]['annotations']['timezone']['offset_sec']*1000));
+                        $('#sunrise').html("Sun rises at "+ new Date((result['data']['opencage']['results'][0]['annotations']['sun']['rise']['apparent'] + result['data']['opencage']['results'][0]['annotations']['timezone']['offset_sec'])*1000));
+                        $('#sunset').html("Sun sets at "+ new Date((result['data']['opencage']['results'][0]['annotations']['sun']['set']['apparent']+ result['data']['opencage']['results'][0]['annotations']['timezone']['offset_sec'])*1000));
+                        }else{
+                            $('#driving').html("");
+                            $('#localTime').html("");
+                            $('#sunrise').html("");
+                            $('#sunset').html(""); 
+                        }
+
+                        var list3 =  document.getElementById('nobel');
+                            list3.innerHTML = "";
+                            for (var i = 0; i < result['data']['nobel']['laureates'].length; i++) {
+                                li = document.createElement('li');
+                                li.innerHTML = `${result['data']['nobel']['laureates'][i]['fullName']['en']} in ${result['data']['nobel']['laureates'][i]['nobelPrizes'][0]['awardYear']} for ${result['data']['nobel']['laureates'][i]['nobelPrizes'][0]['category']['en']}`;
+                                list3.appendChild(li);
+                            }
+
+                        
+
                         $('#wiki').html(result['data']['wiki']['extract']);
                         $('#photoImg').attr({src: result['data']['photo']['results'][rand_photo]['urls']['small']});
                         
@@ -150,10 +236,10 @@ function selectCountry(country, country_iso) {
                         }
 
                         if(result['data']['covid']["cases"]){
-                        $('#cases').html("Total cases: " + result['data']['covid']["cases"]);
-                        $('#recovered').html("Total recovered: " + result['data']['covid']["recovered"]);
-                        $('#deaths').html("Total deaths: " + result['data']['covid']["deaths"]);
-                        $('#deathsToday').html("Deaths today: " + result['data']['covid']["todayDeaths"]);
+                        $('#cases').html("Total cases: " + nf.format(result['data']['covid']["cases"]));
+                        $('#recovered').html("Total recovered: " + nf.format(result['data']['covid']["recovered"]));
+                        $('#deaths').html("Total deaths: " + nf.format(result['data']['covid']["deaths"]));
+                        $('#deathsToday').html("Deaths today: " + nf.format(result['data']['covid']["todayDeaths"]));
                         }else{
                             $('#cases').html("Sorry, no data found");
                             $('#recovered').html("Sorry, no data found"); 
@@ -171,10 +257,8 @@ function selectCountry(country, country_iso) {
                         }else{
                             $('#news').html("Sorry, news service not available at the moment.")
                         }
-                        
-                        //var mark = L.marker([result['data']['opencage']['results'][0]['geometry']['lat'], result['data']['opencage']['results'][0]['geometry']['lng']]).addTo(mymap).bindPopup(`Capital city of ${result['data']['country']["capital"]}`);
 
-
+                        $('#loading').hide();
                         
                         
                     }

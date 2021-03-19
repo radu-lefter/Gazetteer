@@ -32,6 +32,8 @@ $executionStartTime = microtime(true) / 1000;
 
     $url9 = "https://api.opencagedata.com/geocode/v1/json?q=$capital&key=68d11922aad3402caf0baf9b8377a56b";
 
+	$url10 = "https://api.nobelprize.org/2.0/laureates?birthCountry={$country}";
+
 
 	$ch1 = curl_init();
 	curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER, false);
@@ -78,6 +80,11 @@ $executionStartTime = microtime(true) / 1000;
 	curl_setopt($ch9, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch9, CURLOPT_URL,$url9);
 
+	$ch10 = curl_init();
+	curl_setopt($ch10, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch10, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch10, CURLOPT_URL,$url10);
+
 
 	$result1=curl_exec($ch1);
     $result2=curl_exec($ch2);
@@ -88,6 +95,7 @@ $executionStartTime = microtime(true) / 1000;
 	$result7=curl_exec($ch7);
 	$result8=curl_exec($ch8);
 	$result9=curl_exec($ch9);
+	$result10=curl_exec($ch10);
 
 	curl_close($ch1);
     curl_close($ch2);
@@ -98,6 +106,7 @@ $executionStartTime = microtime(true) / 1000;
 	curl_close($ch7);
 	curl_close($ch8);
 	curl_close($ch9);
+	curl_close($ch10);
 
 	$decode1 = json_decode($result1,true);	
     $decode2 = json_decode($result2,true);
@@ -108,6 +117,7 @@ $executionStartTime = microtime(true) / 1000;
 	$decode7 = json_decode($result7,true);
 	$decode8 = json_decode($result8,true);
 	$decode9 = json_decode($result9,true);
+	$decode10 = json_decode($result10,true);
 
 	$output['status']['code'] = "200";
 	$output['status']['name'] = "ok";
@@ -122,6 +132,7 @@ $executionStartTime = microtime(true) / 1000;
 	$output['data']['weather'] = $decode7;
 	$output['data']['exchange'] = $decode8;
 	$output['data']['opencage'] = $decode9;
+	$output['data']['nobel'] = $decode10;
     
 	
 	header('Content-Type: application/json; charset=UTF-8');

@@ -9342,7 +9342,7 @@
    "iso2": "CA",
    "iso3": "CAN",
    "admin_name": "Ontario",
-   "capital": "",
+   "capital": "primary",
    "population": 989567,
    "id": 1124399363
  },
@@ -24188,7 +24188,7 @@
    "iso2": "PR",
    "iso3": "PRI",
    "admin_name": "Puerto Rico",
-   "capital": "",
+   "capital": "primary",
    "population": 331165,
    "id": 1630035577
  },

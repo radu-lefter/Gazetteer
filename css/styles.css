@@ -10,6 +10,11 @@ html,body, #wrapper {
     width: 100vw;
 }
 
+#loading{
+    width: 380px;
+    height: 130%;
+}
+
 #mapId{ 
     height: 100%;
     width: 100vw;
@@ -88,6 +93,10 @@ html,body, #wrapper {
         width: 250px;
     }
     #photoImg{
+        width: 220px;
+    }
+
+    #loading{
         width: 220px;
     }
     
