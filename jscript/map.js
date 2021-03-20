@@ -69,9 +69,13 @@ var nf = Intl.NumberFormat();
 
 function selectCountry(country, country_iso) {
 
+    //show loading gif
     $('#loading').show();
+    $('#content').hide();
+
     console.log(country);
     console.log(country_iso);
+
     $.ajax({
         url: "php/getCountriesData.php",
         type: 'POST',
@@ -131,6 +135,7 @@ function selectCountry(country, country_iso) {
 
             var marker;
 
+            //populate the markers on the map
             function populate(){
                 for (let item of result[1]) {
                     if(item['capital']=="primary"){
@@ -160,6 +165,9 @@ function selectCountry(country, country_iso) {
             }
 
             //list of the unesco sites
+            if(result[2].length == 0){
+                $('#usites').html("No unesco heritage sites present.")
+            }else{
             var list2 =  document.getElementById('usites');
             list2.innerHTML = "";
             for (var i = 0; i < result[2].length; i++) {
@@ -167,8 +175,9 @@ function selectCountry(country, country_iso) {
                 li.innerHTML = result[2][i]['properties']['name_en'];
                 list2.appendChild(li);
             }
+        }
 
-             
+             //gettind data from the apis
             $.ajax({
                 url: "php/getAPIData.php",
                 type: 'POST',
@@ -195,7 +204,17 @@ function selectCountry(country, country_iso) {
                         $('#capital').html("Capital: " + result['data']['country']["capital"]);
                         $('#continent').html("Continent: " + result['data']['country']["subregion"]);
                         $('#population').html("Population: " + nf.format(result['data']['country']["population"]));
-                        $('#language').html("Language: " + result['data']['country']["languages"][0]["name"]);
+
+                        var para =  document.getElementById('language');
+                        para.innerHTML = "";
+                        para.innerHTML = "Languages: ";
+                        for (var i = 0; i < result['data']['country']['languages'].length; i++) {
+                            span = document.createElement('span');
+                            span.innerText = `| ${result['data']['country']['languages'][i]['name']} | `;
+                            para.appendChild(span);
+                        }
+
+                        //$('#language').html("Language: " + result['data']['country']["languages"][0]["name"]);
                         $('#area').html("Area: " + nf.format(result['data']['country']["area"]) + " km<sup>2</sup>");
                         $('#currency').html("Currency: " + result['data']['country']["currencies"][0]["name"]);
                         $('#exchange').html("One USD is worth "+ result['data']['exchange']['rates'][result['data']['country']["currencies"][0]["code"]] +" "+ result['data']['country']["currencies"][0]["code"]);
@@ -205,17 +224,21 @@ function selectCountry(country, country_iso) {
                         $('#gini').html("Gini coefficient: " + result['data']['country']["gini"]);
 
                         if(result['data']['opencage']){
+                            var sunrise = new Date((result['data']['opencage']['results'][0]['annotations']['sun']['rise']['apparent'] + result['data']['opencage']['results'][0]['annotations']['timezone']['offset_sec'])*1000);
+                            var sunset = new Date((result['data']['opencage']['results'][0]['annotations']['sun']['set']['apparent']+ result['data']['opencage']['results'][0]['annotations']['timezone']['offset_sec'])*1000);
                         $('#driving').html("Driving on the "+ result['data']['opencage']['results'][0]['annotations']['roadinfo']['drive_on']+" side");
-                        $('#localTime').html("Local time in the capital is "+ new Date(new Date().getTime() + result['data']['opencage']['results'][0]['annotations']['timezone']['offset_sec']*1000));
-                        $('#sunrise').html("Sun rises at "+ new Date((result['data']['opencage']['results'][0]['annotations']['sun']['rise']['apparent'] + result['data']['opencage']['results'][0]['annotations']['timezone']['offset_sec'])*1000));
-                        $('#sunset').html("Sun sets at "+ new Date((result['data']['opencage']['results'][0]['annotations']['sun']['set']['apparent']+ result['data']['opencage']['results'][0]['annotations']['timezone']['offset_sec'])*1000));
+                        $('#localTime').html("Local date and time is "+ new Date(new Date().getTime() + result['data']['opencage']['results'][0]['annotations']['timezone']['offset_sec']*1000).toString().substr(0,25));
+                        $('#sunrise').html("Sun rises at "+ sunrise.toString().substr(16,8));
+                        $('#sunset').html("Sun sets at "+ sunset.toString().substr(16,8));
                         }else{
                             $('#driving').html("");
                             $('#localTime').html("");
                             $('#sunrise').html("");
                             $('#sunset').html(""); 
                         }
-
+                        if(result['data']['nobel']['laureates'].length == 0){
+                            $('#nobel').html("No nobel prize winners.")
+                        }else{
                         var list3 =  document.getElementById('nobel');
                             list3.innerHTML = "";
                             for (var i = 0; i < result['data']['nobel']['laureates'].length; i++) {
@@ -223,12 +246,18 @@ function selectCountry(country, country_iso) {
                                 li.innerHTML = `${result['data']['nobel']['laureates'][i]['fullName']['en']} in ${result['data']['nobel']['laureates'][i]['nobelPrizes'][0]['awardYear']} for ${result['data']['nobel']['laureates'][i]['nobelPrizes'][0]['category']['en']}`;
                                 list3.appendChild(li);
                             }
+                        }
 
                         
 
                         $('#wiki').html(result['data']['wiki']['extract']);
-                        $('#photoImg').attr({src: result['data']['photo']['results'][rand_photo]['urls']['small']});
-                        
+
+                        if(!result['data']['photo']['results'][rand_photo]){
+                            $('#photoImg').attr({src: result['data']['photo']['results'][rand_photo]['urls']['small']});
+                        }else{
+                            $('#photoImg').attr({src: result['data']['photo']['results'][0]['urls']['small']});
+                        }
+
                         if(result['data']['youtube']['items']){
                             $('#iframe').attr({src: 'https://www.youtube.com/embed/'+ result['data']['youtube']['items'][0]['id']['videoId']});
                         } else {
@@ -257,14 +286,16 @@ function selectCountry(country, country_iso) {
                         }else{
                             $('#news').html("Sorry, news service not available at the moment.")
                         }
-
+                        
+                        //hide loading gif
                         $('#loading').hide();
+                        $('#content').show();
                         
                         
                     }
   
                 },
-                error: function(jqXHR, textStatus, errorThrown) {
+                error: function() {
                     console.log("An error has occured!");
                 }
             }); 

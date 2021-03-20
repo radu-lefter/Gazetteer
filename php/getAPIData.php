@@ -32,7 +32,7 @@ $executionStartTime = microtime(true) / 1000;
 
     $url9 = "https://api.opencagedata.com/geocode/v1/json?q=$capital&key=68d11922aad3402caf0baf9b8377a56b";
 
-	$url10 = "https://api.nobelprize.org/2.0/laureates?birthCountry={$country}";
+	$url10 = "https://api.nobelprize.org/2.0/laureates?residence={$country}";
 
 
 	$ch1 = curl_init();

@@ -12,7 +12,7 @@ html,body, #wrapper {
 
 #loading{
     width: 380px;
-    height: 130%;
+    height: auto;
 }
 
 #mapId{ 
@@ -98,6 +98,7 @@ html,body, #wrapper {
 
     #loading{
         width: 220px;
+        height: auto;
     }
     
 }
