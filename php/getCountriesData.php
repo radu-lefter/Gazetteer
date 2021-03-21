@@ -36,7 +36,7 @@ $cities = array_filter(
 $cities = array_values($cities);
 
 if(count($cities)>=9){
-    $cities = array_slice($cities, 0, 10);
+    $cities = array_slice($cities, 0, 15);
 }
 
 //filtering for country unesco sites array

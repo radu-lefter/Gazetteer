@@ -1,4 +1,11 @@
 
+
+//Set button for showing modal
+$("#button_show").click(function() {
+    $('#myModal').modal('show');
+  });
+
+
 //populate the select list
 
 let dropdown = $('#countryDropdown');
@@ -269,9 +276,9 @@ function selectCountry(country, country_iso) {
                         }
 
                         //Camera
-                        if(result['data']['camera']['result']['webcams'][rand_photo]){
-                            $('#camLoc').html(result['data']['camera']['result']['webcams'][rand_photo]['location']['region']+" - "+result['data']['camera']['result']['webcams'][rand_photo]['location']['city'])
-                            $('#iframe_2').attr({src: result['data']['camera']['result']['webcams'][rand_photo]['player']['year']['embed']});
+                        if(result['data']['camera']['result']['webcams'][0]){
+                            $('#camLoc').html(result['data']['camera']['result']['webcams'][0]['location']['region']+" - "+result['data']['camera']['result']['webcams'][0]['location']['city'])
+                            $('#iframe_2').attr({src: result['data']['camera']['result']['webcams'][0]['player']['year']['embed']});
                         } else {
                             $('#camera').html("Camera not found");
                         }
@@ -315,7 +322,10 @@ function selectCountry(country, country_iso) {
             }); 
         
             $('#myModal').modal('show');
+            setTimeout(function (){document.getElementById("button_show").style.display = "block"}, 2000);
             
+            
+
         },
     }).fail(function () {});
 };

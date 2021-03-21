@@ -10,6 +10,14 @@ html,body, #wrapper {
     width: 100vw;
 }
 
+#button_show{
+    position: absolute;
+    display: none;
+    z-index: 3;
+    top:500px;
+    left: 0px;
+}
+
 #loading{
     width: 380px;
     height: auto;
