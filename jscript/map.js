@@ -200,6 +200,7 @@ function selectCountry(country, country_iso) {
                         let rand_news2 = Math.floor(Math.random() * 20);
                         let rand_news3 = Math.floor(Math.random() * 20);
         
+                        //Restcountries
                         $('#countryName').html(result['data']['country']["name"]);
                         $('#capital').html("Capital: " + result['data']['country']["capital"]);
                         $('#continent').html("Continent: " + result['data']['country']["subregion"]);
@@ -214,7 +215,6 @@ function selectCountry(country, country_iso) {
                             para.appendChild(span);
                         }
 
-                        //$('#language').html("Language: " + result['data']['country']["languages"][0]["name"]);
                         $('#area').html("Area: " + nf.format(result['data']['country']["area"]) + " km<sup>2</sup>");
                         $('#currency').html("Currency: " + result['data']['country']["currencies"][0]["name"]);
                         $('#exchange').html("One USD is worth "+ result['data']['exchange']['rates'][result['data']['country']["currencies"][0]["code"]] +" "+ result['data']['country']["currencies"][0]["code"]);
@@ -223,6 +223,7 @@ function selectCountry(country, country_iso) {
                         $('#phone').html("Phone prefix: " + result['data']['country']["callingCodes"][0]);
                         $('#gini').html("Gini coefficient: " + result['data']['country']["gini"]);
 
+                        //Opencage
                         if(result['data']['opencage']){
                             var sunrise = new Date((result['data']['opencage']['results'][0]['annotations']['sun']['rise']['apparent'] + result['data']['opencage']['results'][0]['annotations']['timezone']['offset_sec'])*1000);
                             var sunset = new Date((result['data']['opencage']['results'][0]['annotations']['sun']['set']['apparent']+ result['data']['opencage']['results'][0]['annotations']['timezone']['offset_sec'])*1000);
@@ -236,6 +237,8 @@ function selectCountry(country, country_iso) {
                             $('#sunrise').html("");
                             $('#sunset').html(""); 
                         }
+
+                        //Nobel
                         if(result['data']['nobel']['laureates'].length == 0){
                             $('#nobel').html("No nobel prize winners.")
                         }else{
@@ -248,22 +251,32 @@ function selectCountry(country, country_iso) {
                             }
                         }
 
-                        
 
                         $('#wiki').html(result['data']['wiki']['extract']);
 
+                        //Unsplash
                         if(!result['data']['photo']['results'][rand_photo]){
                             $('#photoImg').attr({src: result['data']['photo']['results'][rand_photo]['urls']['small']});
                         }else{
                             $('#photoImg').attr({src: result['data']['photo']['results'][0]['urls']['small']});
                         }
 
+                        //Youtube
                         if(result['data']['youtube']['items']){
-                            $('#iframe').attr({src: 'https://www.youtube.com/embed/'+ result['data']['youtube']['items'][0]['id']['videoId']});
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/'+ result['data']['youtube']['items'][0]['id']['videoId']});
                         } else {
                             $('#video').html("Video not found");
                         }
 
+                        //Camera
+                        if(result['data']['camera']['result']['webcams'][rand_photo]){
+                            $('#camLoc').html(result['data']['camera']['result']['webcams'][rand_photo]['location']['region']+" - "+result['data']['camera']['result']['webcams'][rand_photo]['location']['city'])
+                            $('#iframe_2').attr({src: result['data']['camera']['result']['webcams'][rand_photo]['player']['year']['embed']});
+                        } else {
+                            $('#camera').html("Camera not found");
+                        }
+
+                        //Coovid
                         if(result['data']['covid']["cases"]){
                         $('#cases').html("Total cases: " + nf.format(result['data']['covid']["cases"]));
                         $('#recovered').html("Total recovered: " + nf.format(result['data']['covid']["recovered"]));
@@ -276,6 +289,7 @@ function selectCountry(country, country_iso) {
                             $('#deathsToday').html("Sorry, no data found");
                         }
 
+                        //News
                         if(result['data']['news']['articles']){
                             $('#news1').attr({href: result['data']['news']['articles'][rand_news1]['url']});
                             $('#news1').html(result['data']['news']['articles'][rand_news1]['title']);

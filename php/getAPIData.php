@@ -4,6 +4,7 @@
 
 $country_wiki = preg_replace('/\s+/', '_', $_REQUEST['country']);
 $country = preg_replace('/\s+/', '-', $_REQUEST['country']);
+$country_nobel = preg_replace('/\s+/', '_', $_REQUEST['country']);
 $date = date("Y-m-d", strtotime("-1 months"));
 
 
@@ -32,7 +33,15 @@ $executionStartTime = microtime(true) / 1000;
 
     $url9 = "https://api.opencagedata.com/geocode/v1/json?q=$capital&key=68d11922aad3402caf0baf9b8377a56b";
 
-	$url10 = "https://api.nobelprize.org/2.0/laureates?residence={$country}";
+
+    $url10;
+	if($country == "United-States"){
+		$url10 = "https://api.nobelprize.org/2.0/laureates?residence=usa";
+	}else{
+		$url10 = "https://api.nobelprize.org/2.0/laureates?residence={$country_nobel}";
+	}
+
+	$url11 ="https://api.windy.com/api/webcams/v2/list/country={$_REQUEST['country_iso']}/?show=webcams:player,location&key=tTmu5wsss0RgBLG0bb218sYWqon0CSpb";
 
 
 	$ch1 = curl_init();
@@ -85,6 +94,11 @@ $executionStartTime = microtime(true) / 1000;
 	curl_setopt($ch10, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch10, CURLOPT_URL,$url10);
 
+	$ch11 = curl_init();
+	curl_setopt($ch11, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch11, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch11, CURLOPT_URL,$url11);
+
 
 	$result1=curl_exec($ch1);
     $result2=curl_exec($ch2);
@@ -96,6 +110,7 @@ $executionStartTime = microtime(true) / 1000;
 	$result8=curl_exec($ch8);
 	$result9=curl_exec($ch9);
 	$result10=curl_exec($ch10);
+	$result11=curl_exec($ch11);
 
 	curl_close($ch1);
     curl_close($ch2);
@@ -107,6 +122,7 @@ $executionStartTime = microtime(true) / 1000;
 	curl_close($ch8);
 	curl_close($ch9);
 	curl_close($ch10);
+	curl_close($ch11);
 
 	$decode1 = json_decode($result1,true);	
     $decode2 = json_decode($result2,true);
@@ -118,6 +134,7 @@ $executionStartTime = microtime(true) / 1000;
 	$decode8 = json_decode($result8,true);
 	$decode9 = json_decode($result9,true);
 	$decode10 = json_decode($result10,true);
+	$decode11 = json_decode($result11,true);
 
 	$output['status']['code'] = "200";
 	$output['status']['name'] = "ok";
@@ -133,6 +150,7 @@ $executionStartTime = microtime(true) / 1000;
 	$output['data']['exchange'] = $decode8;
 	$output['data']['opencage'] = $decode9;
 	$output['data']['nobel'] = $decode10;
+	$output['data']['camera'] = $decode11;
     
 	
 	header('Content-Type: application/json; charset=UTF-8');

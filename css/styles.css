@@ -96,6 +96,14 @@ html,body, #wrapper {
         width: 220px;
     }
 
+    #iframe_1{
+        width: 220px;
+    }
+
+    #iframe_2{
+        width: 220px;
+    }
+
     #loading{
         width: 220px;
         height: auto;
