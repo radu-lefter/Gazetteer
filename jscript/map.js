@@ -108,81 +108,10 @@ function selectCountry(country, country_iso) {
            
 
             if(geoson){geoson.clearLayers();}
-            geoson = L.geoJSON(result[0], {style: myStyle}).addTo(mymap);
+            geoson = L.geoJSON(result[0], {style:myStyle}).addTo(mymap);
             mymap.fitBounds(geoson.getBounds());
 
-            var greenIcon = new L.Icon({
-                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-                iconSize: [35, 51],
-                iconAnchor: [12, 41],
-                popupAnchor: [1, -34],
-                shadowSize: [41, 41]
-              });
-
-            var redIcon = new L.Icon({
-                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
-                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-                iconSize: [20, 33],
-                iconAnchor: [12, 41],
-                popupAnchor: [1, -34],
-                shadowSize: [41, 41]
-              });
-            
-            var goldIcon = new L.Icon({
-                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-gold.png',
-                shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-                iconSize: [20, 33],
-                iconAnchor: [12, 41],
-                popupAnchor: [1, -34],
-                shadowSize: [41, 41]
-              });
-
-              
-
-            var marker;
-
-            //populate the markers on the map
-            function populate(){
-                for (let item of result[1]) {
-                    if(item['capital']=="primary"){
-                        marker = L.marker([item['lat'], item['lng']], {icon: greenIcon}).bindPopup(`This is a capital city! <br> Name: ${item['city']} <br> Population: ${nf.format(item['population'])}`);
-                        markers.addLayer(marker);
-                    }else{
-                        marker = L.marker([item['lat'], item['lng']], {icon: redIcon}).bindPopup(`Name: ${item['city']} <br> Population: ${nf.format(item['population'])}`);
-                        markers.addLayer(marker);
-                    }
-                    
-                } 
-                for (let item of result[2]) {
-                    marker = L.marker([item['properties']['latitude'], item['properties']['longitude']], {icon: goldIcon}).bindPopup(`Name: ${item['properties']['name_en']} <br> Description: ${item['properties']['short_description_en']}`);
-                    markers.addLayer(marker);
-                }
-            }
-
-            populate();
-
-            //creating a list of the major cities in modal
-            var list =  document.getElementById('cities');
-            list.innerHTML = "";
-            for (var i = 0; i < result[1].length; i++) {
-                li = document.createElement('li');
-                li.innerHTML = result[1][i]['city'];
-                list.appendChild(li);
-            }
-
-            //list of the unesco sites
-            if(result[2].length == 0){
-                $('#usites').html("No unesco heritage sites present.")
-            }else{
-            var list2 =  document.getElementById('usites');
-            list2.innerHTML = "";
-            for (var i = 0; i < result[2].length; i++) {
-                li = document.createElement('li');
-                li.innerHTML = result[2][i]['properties']['name_en'];
-                list2.appendChild(li);
-            }
-        }
+ 
 
              //gettind data from the apis
             $.ajax({
@@ -203,9 +132,7 @@ function selectCountry(country, country_iso) {
                     
 
                         let rand_photo = Math.floor(Math.random() * 10);
-                        let rand_news1 = Math.floor(Math.random() * 20);
-                        let rand_news2 = Math.floor(Math.random() * 20);
-                        let rand_news3 = Math.floor(Math.random() * 20);
+                
         
                         //Restcountries
                         $('#countryName').html(result['data']['country']["name"]);
@@ -276,11 +203,11 @@ function selectCountry(country, country_iso) {
                         }
 
                         //Camera
-                        if(result['data']['camera']['result']['webcams'][0]){
-                            $('#camLoc').html(result['data']['camera']['result']['webcams'][0]['location']['region']+" - "+result['data']['camera']['result']['webcams'][0]['location']['city'])
-                            $('#iframe_2').attr({src: result['data']['camera']['result']['webcams'][0]['player']['year']['embed']});
-                        } else {
+                        if(result['data']['camera']['result']['webcams'][0] == undefined){
                             $('#camera').html("Camera not found");
+                        } else {
+                            $('#camLoc').html(result['data']['camera']['result']['webcams'][0]['location']['region']+" - "+result['data']['camera']['result']['webcams'][0]['location']['city']);
+                            $('#iframe_2').attr({src: result['data']['camera']['result']['webcams'][0]['player']['year']['embed']});
                         }
 
                         //Coovid
@@ -297,16 +224,84 @@ function selectCountry(country, country_iso) {
                         }
 
                         //News
-                        if(result['data']['news']['articles']){
-                            $('#news1').attr({href: result['data']['news']['articles'][rand_news1]['url']});
-                            $('#news1').html(result['data']['news']['articles'][rand_news1]['title']);
-                            $('#news2').attr({href: result['data']['news']['articles'][rand_news2]['url']});
-                            $('#news2').html(result['data']['news']['articles'][rand_news2]['title']);
-                            $('#news3').attr({href: result['data']['news']['articles'][rand_news3]['url']});
-                            $('#news3').html(result['data']['news']['articles'][rand_news3]['title']);
-                        }else{
-                            $('#news').html("Sorry, news service not available at the moment.")
+                        var listNews =  document.getElementById('news');
+                        listNews.innerHTML = "";
+                        for(let item of result['data']['news']['articles']){
+                            if(item['source']['id'] == "reuters" || item['source']['id'] == "bbc-news" || item['source']['id'] == "cnn"){
+                                    li = document.createElement('li'); 
+                                    li.innerHTML = `<a href="${item['url']}" target='_blank'>${item['title']}</a>`;
+                                    listNews.appendChild(li);
+                                }
+
                         }
+
+                        //Cities
+                        var listCities =  document.getElementById('cities');
+                        listCities.innerHTML = "";
+                        if(result['data']['cities'] && result['data']['cities']['data'].length <= 10){
+                            
+                            for (let item of result['data']['cities']['data']) {
+                                li = document.createElement('li');
+                                li.innerHTML = `${item['city']} with ${nf.format(item['populationCounts'][0]['value'])} inhabitants`;
+                                listCities.appendChild(li);
+                            }
+                        }else if(result['data']['cities']){
+                            for(let item of result['data']['cities']['data']){
+                                if(item['populationCounts'][0]['value']>=300000){
+                                    li = document.createElement('li');
+                                    li.innerHTML = `${item['city']} with ${nf.format(item['populationCounts'][0]['value'])} inhabitants`;
+                                    listCities.appendChild(li);
+                                }
+                            }
+                        }
+
+                        //Adding markers
+
+                        var greenIcon = new L.Icon({
+                            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                            iconSize: [35, 51],
+                            iconAnchor: [12, 41],
+                            popupAnchor: [1, -34],
+                            shadowSize: [41, 41]
+                        });
+
+                        var goldIcon = new L.Icon({
+                            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-gold.png',
+                            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                            iconSize: [20, 33],
+                            iconAnchor: [12, 41],
+                            popupAnchor: [1, -34],
+                            shadowSize: [41, 41]
+                        });
+
+                        var redIcon = new L.Icon({
+                            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+                            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                            iconSize: [20, 33],
+                            iconAnchor: [12, 41],
+                            popupAnchor: [1, -34],
+                            shadowSize: [41, 41]
+                        });
+
+                        var marker;
+                        if(result['data']['opencage'] != null){
+                            marker = L.marker([result['data']['opencage']['results'][0]['geometry']['lat'], result['data']['opencage']['results'][0]['geometry']['lng']], {icon: greenIcon}).bindPopup(`This is the capital city, ${result['data']['opencage']['results'][0]['components']['city']}!`);
+                            markers.addLayer(marker);
+                        }
+
+                        for (let item of result['data']['attractions']['results']) {
+                            marker = L.marker([item['coordinates']['latitude'], item['coordinates']['longitude']], {icon: goldIcon}).bindPopup(`Attraction: ${item['name']} <br> ${item['snippet']}`);
+                            markers.addLayer(marker);
+                                }
+
+                        for (let item of result['data']['popularCities']['results']) {
+                            marker = L.marker([item['coordinates']['latitude'], item['coordinates']['longitude']], {icon: redIcon}).bindPopup(`City: ${item['name']} <br> ${item['snippet']}`);
+                            markers.addLayer(marker);
+                            }
+
+
+
                         
                         //hide loading gif
                         $('#loading').hide();

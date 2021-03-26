@@ -6,11 +6,22 @@ $country_wiki = preg_replace('/\s+/', '_', $_REQUEST['country']);
 $country = preg_replace('/\s+/', '-', $_REQUEST['country']);
 $country_nobel = preg_replace('/\s+/', '_', $_REQUEST['country']);
 $date = date("Y-m-d", strtotime("-1 months"));
+$country_triposo = strtolower($_REQUEST['country_iso']);
+
+$country_cities;
+if($_REQUEST['country'] == "United States"){
+	$country_cities = 'United States of America';
+}else if($_REQUEST['country'] == "United Kingdom"){
+	$country_cities = 'United Kingdom of Great Britain and Northern Ireland';
+}else{
+	$country_cities = $_REQUEST['country'];
+}
 
 
-$data = file_get_contents("https://restcountries.eu/rest/v2/alpha/{$_REQUEST['country_iso']}");
-$data = json_decode($data, true);
-$capital = $data['capital'];
+
+$dataCountries = file_get_contents("https://restcountries.eu/rest/v2/alpha/{$_REQUEST['country_iso']}");
+$dataCountries = json_decode($dataCountries, true);
+$capital = $dataCountries['capital'];
 
 $executionStartTime = microtime(true) / 1000;
 
@@ -43,6 +54,17 @@ $executionStartTime = microtime(true) / 1000;
 
 	$url11 ="https://api.windy.com/api/webcams/v2/list/country={$_REQUEST['country_iso']}/?show=webcams:player,location&key=tTmu5wsss0RgBLG0bb218sYWqon0CSpb";
 
+	$url12 ="https://countriesnow.space/api/v0.1/countries/population/cities/filter";
+
+	$url13;
+	$url14;
+    if($country_triposo == 'gb'){
+		$url13 ="https://www.triposo.com/api/20210317/poi.json?countrycode=uk&tag_labels=topattractions&count=20&fields=id,name,tag_labels,coordinates,snippet&account=XT9E9UKC&token=kr7m6d774lgujgu60tekqdk08qzwfs1j";
+    	$url14 ="https://www.triposo.com/api/20210317/location.json?countrycode=uk&tag_labels=city&count=20&fields=id,coordinates,name,score,snippet&order_by=-score&account=XT9E9UKC&token=kr7m6d774lgujgu60tekqdk08qzwfs1j";
+	}else{
+		$url13 ="https://www.triposo.com/api/20210317/poi.json?countrycode={$country_triposo}&tag_labels=topattractions&count=20&fields=id,name,tag_labels,coordinates,snippet&account=XT9E9UKC&token=kr7m6d774lgujgu60tekqdk08qzwfs1j";
+    	$url14 ="https://www.triposo.com/api/20210317/location.json?countrycode={$country_triposo}&tag_labels=city&count=20&fields=id,coordinates,name,score,snippet&order_by=-score&account=XT9E9UKC&token=kr7m6d774lgujgu60tekqdk08qzwfs1j";
+	}
 
 	$ch1 = curl_init();
 	curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER, false);
@@ -99,6 +121,35 @@ $executionStartTime = microtime(true) / 1000;
 	curl_setopt($ch11, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch11, CURLOPT_URL,$url11);
 
+	$ch12 = curl_init();
+	curl_setopt($ch12, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch12, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch12, CURLOPT_URL,$url12);
+	curl_setopt($ch12, CURLOPT_CUSTOMREQUEST, 'POST');
+
+	$data = array(
+		
+		"order" => "asc",
+		"orderBy" => "name",
+		"country" => $country_cities,
+		);
+	
+	
+	curl_setopt($ch12, CURLOPT_POSTFIELDS, http_build_query($data));
+	
+	
+
+	$ch13 = curl_init();
+	curl_setopt($ch13, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch13, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch13, CURLOPT_URL,$url13);
+
+	$ch14 = curl_init();
+	curl_setopt($ch14, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch14, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch14, CURLOPT_URL,$url14);
+
+
 
 	$result1=curl_exec($ch1);
     $result2=curl_exec($ch2);
@@ -111,6 +162,9 @@ $executionStartTime = microtime(true) / 1000;
 	$result9=curl_exec($ch9);
 	$result10=curl_exec($ch10);
 	$result11=curl_exec($ch11);
+	$result12=curl_exec($ch12);
+	$result13=curl_exec($ch13);
+	$result14=curl_exec($ch14);
 
 	curl_close($ch1);
     curl_close($ch2);
@@ -123,6 +177,9 @@ $executionStartTime = microtime(true) / 1000;
 	curl_close($ch9);
 	curl_close($ch10);
 	curl_close($ch11);
+	curl_close($ch12);
+	curl_close($ch13);
+	curl_close($ch14);
 
 	$decode1 = json_decode($result1,true);	
     $decode2 = json_decode($result2,true);
@@ -135,6 +192,9 @@ $executionStartTime = microtime(true) / 1000;
 	$decode9 = json_decode($result9,true);
 	$decode10 = json_decode($result10,true);
 	$decode11 = json_decode($result11,true);
+	$decode12 = json_decode($result12,true);
+	$decode13 = json_decode($result13,true);
+	$decode14 = json_decode($result14,true);
 
 	$output['status']['code'] = "200";
 	$output['status']['name'] = "ok";
@@ -151,6 +211,9 @@ $executionStartTime = microtime(true) / 1000;
 	$output['data']['opencage'] = $decode9;
 	$output['data']['nobel'] = $decode10;
 	$output['data']['camera'] = $decode11;
+	$output['data']['cities'] = $decode12;
+	$output['data']['attractions'] = $decode13;
+	$output['data']['popularCities'] = $decode14;
     
 	
 	header('Content-Type: application/json; charset=UTF-8');
