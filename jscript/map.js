@@ -5,6 +5,10 @@ $("#button_show").click(function() {
     $('#myModal').modal('show');
   });
 
+$(".button_close").click(function() {
+    $('#myModal').modal('hide');
+});
+
 
 //populate the select list
 

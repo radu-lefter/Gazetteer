@@ -3,29 +3,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-   integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
-   crossorigin=""/>
-   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
-   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
-   crossorigin=""></script>
-   
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" href="leaflet/leaflet.css" />
+  <script src="leaflet/leaflet.js"></script>
+
+  <link rel="stylesheet" href="bootstrap-5.0.0-beta3-dist/css/bootstrap.min.css">
+  <script src="jscript/jquery-3.6.0.min.js"></script>
+  <script src="bootstrap-5.0.0-beta3-dist/js/bootstrap.min.js"></script>
+
   <link rel="stylesheet" href="css/styles.css">
+  
+
     <title>Gazetteer</title>
 </head>
 <body>
-
-    <!-- <div id='wrapper'>
-      <nav class ="navbar navbar-expand-sm bg-dark justify-content-center ">
-        <select id="countryDropdown" name="country" >
-        </select>
-      </nav>
-      <div id="mapId">
-      </div>
-    </div> -->
 
     
       <div id="mapId">
@@ -44,7 +35,7 @@
         <!-- Modal Header -->
         <div class="modal-header">
           <h4 class="modal-title">Country information</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <button class="button_close" type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
         <!-- Modal body -->
@@ -80,9 +71,6 @@
             <ol id="nobel"></ol>
             <h3>News</h3>
             <ul id="news">
-              <!-- <a id="news1" target='_blank'></a></br>
-              <a id="news2" target='_blank'></a></br>
-              <a id="news3" target='_blank'></a></br> -->
             </ul>
             <h3>Covid statistics</h3>
             <div>
@@ -106,7 +94,7 @@
         
         <!-- Modal footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button class="btn btn-danger button_close" type="button"  data-dismiss="modal" >Close</button>
         </div>
         
       </div>
