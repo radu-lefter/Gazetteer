@@ -1,12 +1,44 @@
 
 
-//Set button for showing modal
-$("#button_show").click(function() {
-    $('#myModal').modal('show');
+//Set buttons for showing modal
+$("#btnGeneral").click(function() {
+    $('#generalModal').modal('show');
+  });
+
+$("#btnWiki").click(function() {
+    $('#wikiModal').modal('show');
+  });
+
+$("#btnPhotos").click(function() {
+    $('#photosModal').modal('show');
+  });
+
+$("#btnCities").click(function() {
+    $('#citiesModal').modal('show');
+  });
+
+$("#btnNobel").click(function() {
+    $('#nobelModal').modal('show');
+  });
+
+$("#btnNews").click(function() {
+    $('#newsModal').modal('show');
+  });
+
+$("#btnCovid").click(function() {
+    $('#covidModal').modal('show');
+  });
+
+$("#btnGeography").click(function() {
+    $('#geographyModal').modal('show');
+  });
+
+$("#btnCamera").click(function() {
+    $('#cameraModal').modal('show');
   });
 
 $(".button_close").click(function() {
-    $('#myModal').modal('hide');
+    $('.modal').modal('hide');
 });
 
 
@@ -52,6 +84,48 @@ var mymap = L.map('mapId').fitWorld();
 //Set map to users current location
 mymap.locate({setView: true, maxZoom: 5});
 
+function getCoords(position){
+
+    var crd = position.coords;
+    console.log(crd);
+    $.ajax({
+        
+        url: "php/getUserCountry.php",
+        type: 'POST',
+        data: {
+            latitude: crd.latitude,
+            longitude: crd.longitude
+        },
+        success: function (response) {
+    
+            //var output = $.parseJSON(response);
+            // console.log(response);
+    
+            if(response){
+                selectCountry(response["data"]["results"][0]["components"]["country"], response["data"]["results"][0]["components"]["ISO_3166-1_alpha-2"]);
+            }
+           
+           
+        },
+    }).fail(function () {
+        console.log("Error encountered!")
+    });
+}
+
+
+
+// const successfulLookup = position => {
+//     const { latitude, longitude } = position.coords;
+//     fetch(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=68d11922aad3402caf0baf9b8377a56b`)
+//       .then(response => response.json())
+//       //.then(response => console.log(response["results"][0]["components"]));
+//       .then(response => selectCountry(response["results"][0]["components"]["country"], response["results"][0]["components"]["ISO_3166-1_alpha-2"]))
+// }
+if (window.navigator.geolocation) {
+    window.navigator.geolocation.getCurrentPosition(getCoords, console.log);
+
+   } 
+//selectCountry("United Kingdom","GB");
 
 //Add the map layer
 L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
@@ -76,16 +150,181 @@ var geoson;
 var markers = L.layerGroup().addTo(mymap);
 var nf = Intl.NumberFormat();
 
+function getNews(country){
+    $.ajax({
+        url: "php/getNewsData.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            country: country
+        },
+        success: function(result) {
+
+            console.log(result);
+
+            if(result.status.name == "ok"){
+
+                var listNews =  document.getElementById('news');
+                        listNews.innerHTML = "";
+                        for(let item of result['data']['articles']){
+                            if(item['source']['id'] == "reuters" || item['source']['id'] == "bbc-news" || item['source']['id'] == "cnn"){
+                                    li = document.createElement('li'); 
+                                    li.innerHTML = `<img src=${item['urlToImage']} alt="" style="width:280px"></img><br>`;
+                                    li.innerHTML += `<a href="${item['url']}" target='_blank'>${item['title']}</a><br>`;
+                                    li.innerHTML += `<p>${item['description']}</p>`;
+                                    listNews.appendChild(li);
+                            }
+
+                        }
+             }
+
+        },
+        error: function() {
+            console.log("News couldn't be loaded!");
+        }
+    }); 
+}
+
+function getNobels(country){
+    $.ajax({
+        url: "php/getNobelData.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            country: country
+        },
+        success: function(result) {
+
+            console.log(result);
+
+            if(result.status.name == "ok"){
+
+                if(result['data']['laureates'].length == 0){
+                    $('#nobel').html("No nobel prize winners.")
+                }else{
+                var list3 =  document.getElementById('nobel');
+                    list3.innerHTML = "";
+                    for (var i = 0; i < result['data']['laureates'].length; i++) {
+                        li = document.createElement('li');
+                        li.innerHTML = `${result['data']['laureates'][i]['fullName']['en']} in ${result['data']['laureates'][i]['nobelPrizes'][0]['awardYear']} for ${result['data']['laureates'][i]['nobelPrizes'][0]['category']['en']}`;
+                        list3.appendChild(li);
+                    }
+                }
+                
+             }
+
+        },
+        error: function() {
+            console.log("Nobels couldn't be loaded!");
+        }
+    }); 
+}
+
+function getPhotos(country){
+    $.ajax({
+        url: "php/getPhotoData.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            country: country
+        },
+        success: function(result) {
+
+            console.log(result);
+
+            if(result.status.name == "ok"){
+
+                var listPhotos =  document.getElementById('photo');
+                        listPhotos.innerHTML = "";
+                        for(let item of result['data']['results']){                      
+                            listPhotos.innerHTML += `<img src=${item['urls']['small']} alt="" ></img>`;
+                        }
+  
+             }
+
+        },
+        error: function() {
+            console.log("Photos couldn't be loaded!");
+        }
+    }); 
+}
+
+function getWiki(country){
+    $.ajax({
+        url: "php/getWikiData.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            country: country
+        },
+        success: function(result) {
+
+            console.log(result);
+
+            if(result.status.name == "ok"){
+
+                $('#wiki').html(result['data']['extract']+"<br><br>"+`<a href=${result['data']['content_urls']['desktop']['page']} target="_blank">Visit Wikipedia page!</a>`);
+  
+             }
+
+        },
+        error: function() {
+            console.log("Wiki couldn't be loaded!");
+        }
+    }); 
+}
+
+function getCorona(country){
+    $.ajax({
+        url: "php/getCoronaData.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            country: country
+        },
+        success: function(result) {
+
+            console.log(result);
+
+            if(result.status.name == "ok"){
+
+                if(result['data']["cases"]){
+                    $('#cases').html("Total cases: " + nf.format(result['data']["cases"]));
+                    $('#recovered').html("Total recovered: " + nf.format(result['data']["recovered"]));
+                    $('#deaths').html("Total deaths: " + nf.format(result['data']["deaths"]));
+                    $('#deathsToday').html("Deaths today: " + nf.format(result['data']["todayDeaths"]));
+                    }else{
+                        $('#cases').html("Sorry, no data found");
+                        $('#recovered').html("Sorry, no data found"); 
+                        $('#deaths').html("Sorry, no data found");
+                        $('#deathsToday').html("Sorry, no data found");
+                    }
+  
+             }
+
+        },
+        error: function() {
+            console.log("Wiki couldn't be loaded!");
+        }
+    }); 
+}
+
 
 
 function selectCountry(country, country_iso) {
 
     //show loading gif
-    $('#loading').show();
+    //$('#loading').show();
     $('#content').hide();
 
     console.log(country);
     console.log(country_iso);
+
+    getNews(country);
+    getNobels(country);
+    getPhotos(country);
+    getWiki(country);
+    getCorona(country);
 
     $.ajax({
         url: "php/getCountriesData.php",
@@ -135,7 +374,7 @@ function selectCountry(country, country_iso) {
                         
                     
 
-                        let rand_photo = Math.floor(Math.random() * 10);
+                        //let rand_photo = Math.floor(Math.random() * 10);
                 
         
                         //Restcountries
@@ -155,7 +394,9 @@ function selectCountry(country, country_iso) {
 
                         $('#area').html("Area: " + nf.format(result['data']['country']["area"]) + " km<sup>2</sup>");
                         $('#currency').html("Currency: " + result['data']['country']["currencies"][0]["name"]);
-                        $('#exchange').html("One USD is worth "+ result['data']['exchange']['rates'][result['data']['country']["currencies"][0]["code"]] +" "+ result['data']['country']["currencies"][0]["code"]);
+                        var currency = result['data']['exchange']['rates'][result['data']['country']["currencies"][0]["code"]];
+                        var fixed = currency.toFixed(2);
+                        $('#exchange').html("One USD is worth "+ fixed +" "+ result['data']['country']["currencies"][0]["code"]);
                         $('#flagImg').attr({src: result['data']['country']['flag'], style: "width:30px"});
                         $('#weather').html("Temperature: " + result['data']['weather']['main']['temp'] + "&#8451; " + result['data']['weather']['weather'][0]['description']);
                         $('#phone').html("Phone prefix: " + result['data']['country']["callingCodes"][0]);
@@ -177,27 +418,27 @@ function selectCountry(country, country_iso) {
                         }
 
                         //Nobel
-                        if(result['data']['nobel']['laureates'].length == 0){
-                            $('#nobel').html("No nobel prize winners.")
-                        }else{
-                        var list3 =  document.getElementById('nobel');
-                            list3.innerHTML = "";
-                            for (var i = 0; i < result['data']['nobel']['laureates'].length; i++) {
-                                li = document.createElement('li');
-                                li.innerHTML = `${result['data']['nobel']['laureates'][i]['fullName']['en']} in ${result['data']['nobel']['laureates'][i]['nobelPrizes'][0]['awardYear']} for ${result['data']['nobel']['laureates'][i]['nobelPrizes'][0]['category']['en']}`;
-                                list3.appendChild(li);
-                            }
-                        }
+                        // if(result['data']['nobel']['laureates'].length == 0){
+                        //     $('#nobel').html("No nobel prize winners.")
+                        // }else{
+                        // var list3 =  document.getElementById('nobel');
+                        //     list3.innerHTML = "";
+                        //     for (var i = 0; i < result['data']['nobel']['laureates'].length; i++) {
+                        //         li = document.createElement('li');
+                        //         li.innerHTML = `${result['data']['nobel']['laureates'][i]['fullName']['en']} in ${result['data']['nobel']['laureates'][i]['nobelPrizes'][0]['awardYear']} for ${result['data']['nobel']['laureates'][i]['nobelPrizes'][0]['category']['en']}`;
+                        //         list3.appendChild(li);
+                        //     }
+                        // }
 
 
-                        $('#wiki').html(result['data']['wiki']['extract']);
+                        //$('#wiki').html(result['data']['wiki']['extract']);
 
                         //Unsplash
-                        if(!result['data']['photo']['results'][rand_photo]){
-                            $('#photoImg').attr({src: result['data']['photo']['results'][rand_photo]['urls']['small']});
-                        }else{
-                            $('#photoImg').attr({src: result['data']['photo']['results'][0]['urls']['small']});
-                        }
+                        // if(!result['data']['photo']['results'][rand_photo]){
+                        //     $('#photoImg').attr({src: result['data']['photo']['results'][rand_photo]['urls']['small']});
+                        // }else{
+                        //     $('#photoImg').attr({src: result['data']['photo']['results'][0]['urls']['small']});
+                        // }
 
                         //Youtube
                         if(result['data']['youtube']['items']){
@@ -215,29 +456,30 @@ function selectCountry(country, country_iso) {
                         }
 
                         //Coovid
-                        if(result['data']['covid']["cases"]){
-                        $('#cases').html("Total cases: " + nf.format(result['data']['covid']["cases"]));
-                        $('#recovered').html("Total recovered: " + nf.format(result['data']['covid']["recovered"]));
-                        $('#deaths').html("Total deaths: " + nf.format(result['data']['covid']["deaths"]));
-                        $('#deathsToday').html("Deaths today: " + nf.format(result['data']['covid']["todayDeaths"]));
-                        }else{
-                            $('#cases').html("Sorry, no data found");
-                            $('#recovered').html("Sorry, no data found"); 
-                            $('#deaths').html("Sorry, no data found");
-                            $('#deathsToday').html("Sorry, no data found");
-                        }
+                        // if(result['data']['covid']["cases"]){
+                        // $('#cases').html("Total cases: " + nf.format(result['data']['covid']["cases"]));
+                        // $('#recovered').html("Total recovered: " + nf.format(result['data']['covid']["recovered"]));
+                        // $('#deaths').html("Total deaths: " + nf.format(result['data']['covid']["deaths"]));
+                        // $('#deathsToday').html("Deaths today: " + nf.format(result['data']['covid']["todayDeaths"]));
+                        // }else{
+                        //     $('#cases').html("Sorry, no data found");
+                        //     $('#recovered').html("Sorry, no data found"); 
+                        //     $('#deaths').html("Sorry, no data found");
+                        //     $('#deathsToday').html("Sorry, no data found");
+                        // }
 
                         //News
-                        var listNews =  document.getElementById('news');
-                        listNews.innerHTML = "";
-                        for(let item of result['data']['news']['articles']){
-                            if(item['source']['id'] == "reuters" || item['source']['id'] == "bbc-news" || item['source']['id'] == "cnn"){
-                                    li = document.createElement('li'); 
-                                    li.innerHTML = `<a href="${item['url']}" target='_blank'>${item['title']}</a>`;
-                                    listNews.appendChild(li);
-                                }
+                        // var listNews =  document.getElementById('news');
+                        // listNews.innerHTML = "";
+                        // for(let item of result['data']['news']['articles']){
+                        //     if(item['source']['id'] == "reuters" || item['source']['id'] == "bbc-news" || item['source']['id'] == "cnn"){
+                        //             li = document.createElement('li'); 
+                        //             li.innerHTML = `<img src=${item['urlToImage']} alt="" style="width:280px"></img><br>`;
+                        //             li.innerHTML += `<a href="${item['url']}" target='_blank'>${item['title']}</a>`;
+                        //             listNews.appendChild(li);
+                        //         }
 
-                        }
+                        // }
 
                         //Cities
                         var listCities =  document.getElementById('cities');
@@ -308,7 +550,7 @@ function selectCountry(country, country_iso) {
 
                         
                         //hide loading gif
-                        $('#loading').hide();
+                        //$('#loading').hide();
                         $('#content').show();
                         
                         
@@ -320,8 +562,8 @@ function selectCountry(country, country_iso) {
                 }
             }); 
         
-            $('#myModal').modal('show');
-            setTimeout(function (){document.getElementById("button_show").style.display = "block"}, 2000);
+            //$('#myModal').modal('show');
+            //setTimeout(function (){document.getElementById("button_show").style.display = "block"}, 2000);
             
             
 

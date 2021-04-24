@@ -4,6 +4,77 @@ body {
     margin: 0;
 }
 
+#btnGeneral{
+    position: absolute;
+    z-index: 3;
+    top:115px;
+    left: 0px;
+    width: 150px;
+}
+
+#btnWiki{
+    position: absolute;
+    z-index: 3;
+    top:160px;
+    left: 0px;
+    width: 150px;
+}
+
+#btnPhotos{
+    position: absolute;
+    z-index: 3;
+    top:205px;
+    left: 0px;
+    width: 150px;
+}
+
+#btnCities{
+    position: absolute;
+    z-index: 3;
+    top:250px;
+    left: 0px;
+    width: 150px;
+}
+
+#btnNobel{
+    position: absolute;
+    z-index: 3;
+    top:295px;
+    left: 0px;
+    width: 150px;
+}
+
+#btnNews{
+    position: absolute;
+    z-index: 3;
+    top:340px;
+    left: 0px;
+    width: 150px;
+}
+
+#btnCovid{
+    position: absolute;
+    z-index: 3;
+    top:385px;
+    left: 0px;
+    width: 150px;
+}
+
+#btnGeography{
+    position: absolute;
+    z-index: 3;
+    top:430px;
+    left: 0px;
+    width: 150px;
+}
+
+#btnCamera{
+    position: absolute;
+    z-index: 3;
+    top:475px;
+    left: 0px;
+    width: 150px;
+}
 
 html,body, #wrapper {
     height: 100%;
@@ -33,9 +104,9 @@ html,body, #wrapper {
 #countryDropdown{
     position: absolute;
     z-index: 99999;
-    top:15px;
+    top:20px;
     left: 50px;
-    
+    width: auto;
 }
 
 /* nav{

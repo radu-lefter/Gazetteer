@@ -20,7 +20,7 @@
 
     
       <div id="mapId">
-        <select id="countryDropdown" name="country" >
+        <select id="countryDropdown" name="country" class="form-select">
         </select>
       </div>
      
@@ -28,19 +28,19 @@
         
     <!-- The Modal -->
     
-  <div class="modal left fade" id="myModal">
+  <!-- <div class="modal left fade" id="test">
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
-      <div class="modal-content">
+      <div class="modal-content"> -->
       
         <!-- Modal Header -->
-        <div class="modal-header">
+        <!-- <div class="modal-header">
           <h4 class="modal-title">Country information</h4>
           <button class="button_close" type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
+        </div> -->
         
         <!-- Modal body -->
         
-        <div class="modal-body">
+        <!-- <div class="modal-body">
           <img id="loading" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/>
           <div id="content">
             <h1 id="countryName"></h1>
@@ -64,10 +64,10 @@
             <p id="wiki"></p>
             <p id="photo"><img id="photoImg" src="" alt=""></p>
             <h3>Largest cities</h3>
-            <ol id="cities"></ol>
+            <ol id="cities"></ol> -->
             <!-- <h3>Unesco sites</h3>
             <ol id="usites"></ol> -->
-            <h3>Nobel laureates</h3>
+            <!-- <h3>Nobel laureates</h3>
             <ol id="nobel"></ol>
             <h3>News</h3>
             <ul id="news">
@@ -90,13 +90,282 @@
                 <iframe id="iframe_2" width="360" height="215" src="" frameborder="0"  allowfullscreen></iframe>
               </div>
           </div>
+        </div> -->
+        
+        <!-- Modal footer -->
+        <!-- <div class="modal-footer">
+          <button class="btn btn-danger button_close" type="button"  data-dismiss="modal" >Close</button>
         </div>
         
+      </div>
+    </div>
+  </div> -->
+
+  <button id="btnGeneral" class="btn btn-success">General</button>
+  <button id="btnWiki" class="btn btn-warning">Wikipedia</button>
+  <button id="btnPhotos" class="btn btn-danger">Photos</button>
+  <button id="btnCities" class="btn btn-primary">Cities</button>
+  <button id="btnNobel" class="btn btn-success">Nobel</button>
+  <button id="btnNews" class="btn btn-primary">News</button>
+  <button id="btnCovid" class="btn btn-danger">Covid</button>
+  <button id="btnGeography" class="btn btn-warning">Geography</button>
+  <button id="btnCamera" class="btn btn-success">Camera lapse</button>
+
+  <!--General Modal -->
+    
+  <div class="modal top fade" id="generalModal">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">General information</h4>
+          <button class="button_close" type="button" class="close" data-dismiss="modal">&times;</button>
+        </div> 
+        <!-- Modal body -->
+        <div class="modal-body">
+          <!-- <img id="loading" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> -->
+          <div id="content">
+            <h1 id="countryName"></h1>
+            <p id="capital"></p>
+            <p id="continent"></p>
+            <p id="population"></p>
+            <p id="area"></p>
+            <p id="language"></p>
+            <p id="currency"></p>
+            <p id="exchange"></p>
+            <p id="flag">Flag: <img id="flagImg" src="" alt=""></p>
+            <p id="weather"></p>
+            <p id="phone"></p>
+            <p id="gini"></p>
+            <p id="driving"></p>
+            <p id="localTime"></p>
+            <p id="sunrise"></p>
+            <p id="sunset"></p>
+          </div>
+        </div>   
         <!-- Modal footer -->
         <div class="modal-footer">
           <button class="btn btn-danger button_close" type="button"  data-dismiss="modal" >Close</button>
         </div>
-        
+      </div>
+    </div>
+  </div>
+
+    <!-- Wikipedia Modal -->
+    
+  <div class="modal top fade" id="wikiModal">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Wikipedia article</h4>
+          <button class="button_close" type="button" class="close" data-dismiss="modal">&times;</button>
+        </div> 
+        <!-- Modal body -->
+        <div class="modal-body">
+          <!-- <img id="loading" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> -->
+          <div id="content">
+            <h1 id="countryName"></h1>
+            <p id="wiki"></p>
+          </div>
+        </div>   
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button class="btn btn-danger button_close" type="button"  data-dismiss="modal" >Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Photos Modal -->
+    
+  <div class="modal top fade" id="photosModal">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Photo collection</h4>
+          <button class="button_close" type="button" class="close" data-dismiss="modal">&times;</button>
+        </div> 
+        <!-- Modal body -->
+        <div class="modal-body">
+          <!-- <img id="loading" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> -->
+          <div id="content">
+            <h1 id="countryName"></h1>
+            <div id="photo"></div>
+            <!-- <p id="photo"><img id="photoImg" src="" alt=""></p> -->
+          </div>
+        </div>   
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button class="btn btn-danger button_close" type="button"  data-dismiss="modal" >Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cities Modal -->
+    
+  <div class="modal top fade" id="citiesModal">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Largest cities</h4>
+          <button class="button_close" type="button" class="close" data-dismiss="modal">&times;</button>
+        </div> 
+        <!-- Modal body -->
+        <div class="modal-body">
+          <!-- <img id="loading" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> -->
+          <div id="content">
+            <h1 id="countryName"></h1>
+            <ol id="cities"></ol>
+          </div>
+        </div>   
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button class="btn btn-danger button_close" type="button"  data-dismiss="modal" >Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Nobel Modal -->
+    
+  <div class="modal top fade" id="nobelModal">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Nobel laureates</h4>
+          <button class="button_close" type="button" class="close" data-dismiss="modal">&times;</button>
+        </div> 
+        <!-- Modal body -->
+        <div class="modal-body">
+          <!-- <img id="loading" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> -->
+          <div id="content">
+            <h1 id="countryName"></h1>
+            <ol id="nobel"></ol>
+          </div>
+        </div>   
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button class="btn btn-danger button_close" type="button"  data-dismiss="modal" >Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- News Modal -->
+    
+  <div class="modal top fade" id="newsModal">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">News</h4>
+          <button class="button_close" type="button" class="close" data-dismiss="modal">&times;</button>
+        </div> 
+        <!-- Modal body -->
+        <div class="modal-body">
+          <!-- <img id="loading" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> -->
+          <div id="content">
+            <h1 id="countryName"></h1>
+            <ul id="news"></ul>
+          </div>
+        </div>   
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button class="btn btn-danger button_close" type="button"  data-dismiss="modal" >Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Covid Modal -->
+    
+  <div class="modal top fade" id="covidModal">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Covid statistics</h4>
+          <button class="button_close" type="button" class="close" data-dismiss="modal">&times;</button>
+        </div> 
+        <!-- Modal body -->
+        <div class="modal-body">
+          <!-- <img id="loading" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> -->
+          <div id="content">
+            <h1 id="countryName"></h1>
+            <div>
+              <p id="cases"></p>
+              <p id="recovered"></p>
+              <p id="deaths"></p>
+              <p id="deathsToday"></p>
+            </div>
+          </div>
+        </div>   
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button class="btn btn-danger button_close" type="button"  data-dismiss="modal" >Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Geography now Modal -->
+    
+  <div class="modal top fade" id="geographyModal">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Geography now! video</h4>
+          <button class="button_close" type="button" class="close" data-dismiss="modal">&times;</button>
+        </div> 
+        <!-- Modal body -->
+        <div class="modal-body">
+          <!-- <img id="loading" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> -->
+          <div id="content">
+            <h1 id="countryName"></h1>
+            <div id="video">
+              <iframe id="iframe_1" width="360" height="215" src="" frameborder="0"  allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>   
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button class="btn btn-danger button_close" type="button"  data-dismiss="modal" >Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Camera Modal -->
+    
+  <div class="modal top fade" id="cameraModal">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Camera lapse</h4>
+          <button class="button_close" type="button" class="close" data-dismiss="modal">&times;</button>
+        </div> 
+        <!-- Modal body -->
+        <div class="modal-body">
+          <!-- <img id="loading" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> -->
+          <div id="content">
+            <h1 id="countryName"></h1>
+            <div id="camera">
+              <p id="camLoc"></p>
+              <iframe id="iframe_2" width="360" height="215" src="" frameborder="0"  allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>   
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button class="btn btn-danger button_close" type="button"  data-dismiss="modal" >Close</button>
+        </div>
       </div>
     </div>
   </div>
