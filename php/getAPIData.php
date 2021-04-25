@@ -8,14 +8,14 @@ $country = preg_replace('/\s+/', '-', $_REQUEST['country']);
 //$date = date("Y-m-d", strtotime("-1 months"));
 $country_triposo = strtolower($_REQUEST['country_iso']);
 
-$country_cities;
-if($_REQUEST['country'] == "United States"){
-	$country_cities = 'United States of America';
-}else if($_REQUEST['country'] == "United Kingdom"){
-	$country_cities = 'United Kingdom of Great Britain and Northern Ireland';
-}else{
-	$country_cities = $_REQUEST['country'];
-}
+// $country_cities;
+// if($_REQUEST['country'] == "United States"){
+// 	$country_cities = 'United States of America';
+// }else if($_REQUEST['country'] == "United Kingdom"){
+// 	$country_cities = 'United Kingdom of Great Britain and Northern Ireland';
+// }else{
+// 	$country_cities = $_REQUEST['country'];
+// }
 
 
 
@@ -34,7 +34,7 @@ $executionStartTime = microtime(true) / 1000;
 
 	//$url4 = "https://newsapi.org/v2/everything?q={$country}&from={$date}&sortBy=popularity&apiKey=130f57bb770e4126ab3b0d2e2ec5e2a8";
 
-	$url5 = "https://youtube.googleapis.com/youtube/v3/search?part=snippet&channelId=UCmmPgObSUPw1HL2lq6H4ffA&q={$country}&key=AIzaSyCvsp8SVAs7-J9mONpzI9cnqvhn-1s8GB4";
+	//$url5 = "https://youtube.googleapis.com/youtube/v3/search?part=snippet&channelId=UCmmPgObSUPw1HL2lq6H4ffA&q={$country}&key=AIzaSyCvsp8SVAs7-J9mONpzI9cnqvhn-1s8GB4";
 
 	//$url6 = "https://corona.lmao.ninja/v2/countries/{$_REQUEST['country']}?yesterday&strict&query";
 
@@ -52,9 +52,9 @@ $executionStartTime = microtime(true) / 1000;
 	// 	$url10 = "https://api.nobelprize.org/2.0/laureates?residence={$country_nobel}";
 	// }
 
-	$url11 ="https://api.windy.com/api/webcams/v2/list/country={$_REQUEST['country_iso']}/?show=webcams:player,location&key=tTmu5wsss0RgBLG0bb218sYWqon0CSpb";
+	//$url11 ="https://api.windy.com/api/webcams/v2/list/country={$_REQUEST['country_iso']}/?show=webcams:player,location&key=tTmu5wsss0RgBLG0bb218sYWqon0CSpb";
 
-	$url12 ="https://countriesnow.space/api/v0.1/countries/population/cities/filter";
+	//$url12 ="https://countriesnow.space/api/v0.1/countries/population/cities/filter";
 
 	$url13;
 	$url14;
@@ -86,10 +86,10 @@ $executionStartTime = microtime(true) / 1000;
 	// curl_setopt($ch4, CURLOPT_RETURNTRANSFER, true);
 	// curl_setopt($ch4, CURLOPT_URL,$url4);
 
-	$ch5 = curl_init();
-	curl_setopt($ch5, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($ch5, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch5, CURLOPT_URL,$url5);
+	// $ch5 = curl_init();
+	// curl_setopt($ch5, CURLOPT_SSL_VERIFYPEER, false);
+	// curl_setopt($ch5, CURLOPT_RETURNTRANSFER, true);
+	// curl_setopt($ch5, CURLOPT_URL,$url5);
 
 	// $ch6 = curl_init();
 	// curl_setopt($ch6, CURLOPT_SSL_VERIFYPEER, false);
@@ -116,26 +116,26 @@ $executionStartTime = microtime(true) / 1000;
 	// curl_setopt($ch10, CURLOPT_RETURNTRANSFER, true);
 	// curl_setopt($ch10, CURLOPT_URL,$url10);
 
-	$ch11 = curl_init();
-	curl_setopt($ch11, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($ch11, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch11, CURLOPT_URL,$url11);
+	// $ch11 = curl_init();
+	// curl_setopt($ch11, CURLOPT_SSL_VERIFYPEER, false);
+	// curl_setopt($ch11, CURLOPT_RETURNTRANSFER, true);
+	// curl_setopt($ch11, CURLOPT_URL,$url11);
 
-	$ch12 = curl_init();
-	curl_setopt($ch12, CURLOPT_SSL_VERIFYPEER, false);
-	curl_setopt($ch12, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch12, CURLOPT_URL,$url12);
-	curl_setopt($ch12, CURLOPT_CUSTOMREQUEST, 'POST');
+	// $ch12 = curl_init();
+	// curl_setopt($ch12, CURLOPT_SSL_VERIFYPEER, false);
+	// curl_setopt($ch12, CURLOPT_RETURNTRANSFER, true);
+	// curl_setopt($ch12, CURLOPT_URL,$url12);
+	// curl_setopt($ch12, CURLOPT_CUSTOMREQUEST, 'POST');
 
-	$data = array(
+	// $data = array(
 		
-		"order" => "asc",
-		"orderBy" => "name",
-		"country" => $country_cities,
-		);
+	// 	"order" => "asc",
+	// 	"orderBy" => "name",
+	// 	"country" => $country_cities,
+	// 	);
 	
 	
-	curl_setopt($ch12, CURLOPT_POSTFIELDS, http_build_query($data));
+	// curl_setopt($ch12, CURLOPT_POSTFIELDS, http_build_query($data));
 	
 	
 
@@ -155,14 +155,14 @@ $executionStartTime = microtime(true) / 1000;
     //$result2=curl_exec($ch2);
     //$result3=curl_exec($ch3);
     //$result4=curl_exec($ch4);
-	$result5=curl_exec($ch5);
+	//$result5=curl_exec($ch5);
 	//$result6=curl_exec($ch6);
 	$result7=curl_exec($ch7);
 	$result8=curl_exec($ch8);
 	$result9=curl_exec($ch9);
 	//$result10=curl_exec($ch10);
-	$result11=curl_exec($ch11);
-	$result12=curl_exec($ch12);
+	//$result11=curl_exec($ch11);
+	//$result12=curl_exec($ch12);
 	$result13=curl_exec($ch13);
 	$result14=curl_exec($ch14);
 
@@ -170,14 +170,14 @@ $executionStartTime = microtime(true) / 1000;
     //curl_close($ch2);
     //curl_close($ch3);
     //curl_close($ch4);
-	curl_close($ch5);
+	//curl_close($ch5);
 	//curl_close($ch6);
 	curl_close($ch7);
 	curl_close($ch8);
 	curl_close($ch9);
 	//curl_close($ch10);
-	curl_close($ch11);
-	curl_close($ch12);
+	//curl_close($ch11);
+	//curl_close($ch12);
 	curl_close($ch13);
 	curl_close($ch14);
 
@@ -185,14 +185,14 @@ $executionStartTime = microtime(true) / 1000;
     //$decode2 = json_decode($result2,true);
     //$decode3 = json_decode($result3,true);
 	//$decode4 = json_decode($result4,true);
-	$decode5 = json_decode($result5,true);
+	//$decode5 = json_decode($result5,true);
 	//$decode6 = json_decode($result6,true);
 	$decode7 = json_decode($result7,true);
 	$decode8 = json_decode($result8,true);
 	$decode9 = json_decode($result9,true);
 	//$decode10 = json_decode($result10,true);
-	$decode11 = json_decode($result11,true);
-	$decode12 = json_decode($result12,true);
+	//$decode11 = json_decode($result11,true);
+	//$decode12 = json_decode($result12,true);
 	$decode13 = json_decode($result13,true);
 	$decode14 = json_decode($result14,true);
 
@@ -204,14 +204,14 @@ $executionStartTime = microtime(true) / 1000;
     //$output['data']['wiki'] = $decode2;
     //$output['data']['photo'] = $decode3;
 	//$output['data']['news'] = $decode4;
-	$output['data']['youtube'] = $decode5;
+	//$output['data']['youtube'] = $decode5;
 	//$output['data']['covid'] = $decode6;
 	$output['data']['weather'] = $decode7;
 	$output['data']['exchange'] = $decode8;
 	$output['data']['opencage'] = $decode9;
 	//$output['data']['nobel'] = $decode10;
-	$output['data']['camera'] = $decode11;
-	$output['data']['cities'] = $decode12;
+	//$output['data']['camera'] = $decode11;
+	//$output['data']['cities'] = $decode12;
 	$output['data']['attractions'] = $decode13;
 	$output['data']['popularCities'] = $decode14;
     
