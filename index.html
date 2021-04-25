@@ -101,15 +101,15 @@
     </div>
   </div> -->
 
-  <button id="btnGeneral" class="btn btn-success">General</button>
-  <button id="btnWiki" class="btn btn-warning">Wikipedia</button>
-  <button id="btnPhotos" class="btn btn-danger">Photos</button>
-  <button id="btnCities" class="btn btn-primary">Cities</button>
-  <button id="btnNobel" class="btn btn-success">Nobel</button>
-  <button id="btnNews" class="btn btn-primary">News</button>
-  <button id="btnCovid" class="btn btn-danger">Covid</button>
-  <button id="btnYoutube" class="btn btn-warning">Youtube</button>
-  <button id="btnCamera" class="btn btn-success">Camera lapse</button>
+  <button id="btnGeneral" class="btn btn-secondary">General</button>
+  <button id="btnWiki" class="btn btn-secondary">Wikipedia</button>
+  <button id="btnPhotos" class="btn btn-secondary">Photos</button>
+  <button id="btnCities" class="btn btn-secondary">Cities</button>
+  <button id="btnNobel" class="btn btn-secondary">Nobel</button>
+  <button id="btnNews" class="btn btn-secondary">News</button>
+  <button id="btnCovid" class="btn btn-secondary">Covid</button>
+  <button id="btnYoutube" class="btn btn-secondary">Youtube</button>
+  <button id="btnCamera" class="btn btn-secondary">Camera </button>
 
   <!--General Modal -->
     
@@ -125,7 +125,76 @@
         <div class="modal-body">
           <!-- <img id="loading" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> -->
           <div id="content">
-            <h1 id="countryName"></h1>
+            <table class="table table-success table-striped text-center">
+              <thead>
+                <tr>
+                  <th scope="row" colspan="2" id="countryName" class="text-center h1 bg-danger"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Capital</th>
+                  <td id="capital"></td>
+                </tr>
+                <tr>
+                  <th scope="row" >Continent</th>
+                  <td id="continent"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Population</th>
+                  <td id="population"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Area</th>
+                  <td id="area"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Languages</th>
+                  <td id="language"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Currency</th>
+                  <td id="currency"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Exchange</th>
+                  <td id="exchange"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Flag</th>
+                  <td id="flag"><img id="flagImg" src="" alt=""></td>
+                </tr>
+                <tr>
+                  <th scope="row">Weather</th>
+                  <td id="weather"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Phone prefix</th>
+                  <td id="phone"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Gini coefficient</th>
+                  <td id="gini"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Driving</th>
+                  <td id="driving"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Local time</th>
+                  <td id="localTime"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Sunrise</th>
+                  <td id="sunrise"></td>
+                </tr>
+                <tr>
+                  <th scope="row">Sunset</th>
+                  <td id="sunset"></td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- <h1 id="countryName"></h1>
             <p id="capital"></p>
             <p id="continent"></p>
             <p id="population"></p>
@@ -140,7 +209,7 @@
             <p id="driving"></p>
             <p id="localTime"></p>
             <p id="sunrise"></p>
-            <p id="sunset"></p>
+            <p id="sunset"></p> -->
           </div>
         </div>   
         <!-- Modal footer -->
@@ -191,8 +260,18 @@
         <div class="modal-body">
           <!-- <img id="loading" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> -->
           <div id="content">
-            <h1 id="countryName"></h1>
-            <div id="photo"></div>
+            <table class="table table-primary text-center">
+              <thead>
+                <tr>
+                  <th scope="row" colspan="2" class="text-center h1 bg-danger">Photo gallery</th>
+                </tr>
+              </thead>
+              <tbody id="photosTable">
+
+              </tbody>
+            </table>
+            <!-- <h1 id="countryName"></h1>
+            <div id="photo"></div> -->
             <!-- <p id="photo"><img id="photoImg" src="" alt=""></p> -->
           </div>
         </div>   
@@ -244,8 +323,19 @@
         <div class="modal-body">
           <!-- <img id="loading" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> -->
           <div id="content">
-            <h1 id="countryName"></h1>
-            <ol id="nobel"></ol>
+            <table class="table table-success table-striped text-center">
+              <thead>
+                <tr>
+                  <th scope="row" class="text-center bg-primary">Winner</th>
+                  <th scope="row" class="text-center  bg-primary">Year</th>
+                  <th scope="row" class="text-center  bg-primary">Category</th>
+                </tr>
+              </thead>
+              <tbody id="nobelTable">
+              </tbody>
+            </table>
+            <!-- <h1 id="countryName"></h1>
+            <ol id="nobel"></ol> -->
           </div>
         </div>   
         <!-- Modal footer -->
@@ -270,8 +360,22 @@
         <div class="modal-body">
           <!-- <img id="loading" src="https://media.giphy.com/media/xTk9ZvMnbIiIew7IpW/giphy.gif"/> -->
           <div id="content">
-            <h1 id="countryName"></h1>
-            <ul id="news"></ul>
+            <table class="table table-light text-center borderless">
+              <thead>
+                <tr>
+                  <th scope="row" colspan="2" class="text-center h1 bg-danger" id="newsHeader"></th>
+                </tr>
+              </thead>
+              <tbody id="newsTable">
+                <tr>
+                  <td id="noNews">
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- <h1 id="countryName"></h1>
+            <ul id="news"></ul> -->
           </div>
         </div>   
         <!-- Modal footer -->

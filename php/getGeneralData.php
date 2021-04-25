@@ -3,6 +3,8 @@
 $dataCountries = file_get_contents("https://restcountries.eu/rest/v2/alpha/{$_REQUEST['country_iso']}");
 $dataCountries = json_decode($dataCountries, true);
 $capital = $dataCountries['capital'];
+$capital_cage = preg_replace('/\s+/', '_', $dataCountries['capital']);
+
 
 $executionStartTime = microtime(true) / 1000;
 
@@ -12,7 +14,7 @@ $url2 = "https://api.openweathermap.org/data/2.5/weather?q=$capital,{$_REQUEST['
 
 $url3 = "https://openexchangerates.org/api/latest.json?app_id=8ac98ac2eff345c38601e892f6a1b191";
 
-$url4 = "https://api.opencagedata.com/geocode/v1/json?q=$capital&key=68d11922aad3402caf0baf9b8377a56b";
+$url4 = "https://api.opencagedata.com/geocode/v1/json?q=$capital_cage&key=68d11922aad3402caf0baf9b8377a56b";
 
 $ch1 = curl_init();
 	curl_setopt($ch1, CURLOPT_SSL_VERIFYPEER, false);

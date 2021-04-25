@@ -8,72 +8,73 @@ body {
     position: absolute;
     z-index: 3;
     top:115px;
-    left: 0px;
-    width: 150px;
+    left: 20px;
+    width: 120px;
+    background-color: rgb(9, 134, 172);
 }
 
 #btnWiki{
     position: absolute;
     z-index: 3;
     top:160px;
-    left: 0px;
-    width: 150px;
+    left: 20px;
+    width: 120px;
 }
 
 #btnPhotos{
     position: absolute;
     z-index: 3;
     top:205px;
-    left: 0px;
-    width: 150px;
+    left: 20px;
+    width: 120px;
 }
 
 #btnCities{
     position: absolute;
     z-index: 3;
     top:250px;
-    left: 0px;
-    width: 150px;
+    left: 20px;
+    width: 120px;
 }
 
 #btnNobel{
     position: absolute;
     z-index: 3;
     top:295px;
-    left: 0px;
-    width: 150px;
+    left: 20px;
+    width: 120px;
 }
 
 #btnNews{
     position: absolute;
     z-index: 3;
     top:340px;
-    left: 0px;
-    width: 150px;
+    left: 20px;
+    width: 120px;
 }
 
 #btnCovid{
     position: absolute;
     z-index: 3;
     top:385px;
-    left: 0px;
-    width: 150px;
+    left: 20px;
+    width: 120px;
 }
 
 #btnYoutube{
     position: absolute;
     z-index: 3;
     top:430px;
-    left: 0px;
-    width: 150px;
+    left: 20px;
+    width: 120px;
 }
 
 #btnCamera{
     position: absolute;
     z-index: 3;
     top:475px;
-    left: 0px;
-    width: 150px;
+    left: 20px;
+    width: 120px;
 }
 
 html,body, #wrapper {

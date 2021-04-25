@@ -151,6 +151,8 @@ var markers = L.layerGroup().addTo(mymap);
 var nf = Intl.NumberFormat();
 
 function getNews(country){
+    var newsHeader = document.getElementById('newsHeader');
+    newsHeader.innerHTML = `Latest news related to ${country}`;
     $.ajax({
         url: "php/getNewsData.php",
         type: 'POST',
@@ -164,17 +166,41 @@ function getNews(country){
 
             if(result.status.name == "ok"){
 
-                var listNews =  document.getElementById('news');
-                        listNews.innerHTML = "";
+                        
+                        var newsTable =  document.getElementById('newsTable');
+                        newsTable.innerHTML = "";
+                        
                         for(let item of result['data']['articles']){
                             if(item['source']['id'] == "reuters" || item['source']['id'] == "bbc-news" || item['source']['id'] == "cnn"){
-                                    li = document.createElement('li'); 
-                                    li.innerHTML = `<img src=${item['urlToImage']} alt="" style="width:280px"></img><br>`;
-                                    li.innerHTML += `<a href="${item['url']}" target='_blank'>${item['title']}</a><br>`;
-                                    li.innerHTML += `<p>${item['description']}</p>`;
-                                    listNews.appendChild(li);
-                            }
+                                    
+                                    tr = document.createElement('tr'); 
+                                    td = document.createElement('td'); 
+                                    td.innerHTML += `<a href="${item['url']}" target='_blank'>${item['title']}</a><br>`;
+                                    tr.appendChild(td);
+                                    newsTable.appendChild(tr);
+                                    tr = document.createElement('tr'); 
+                                    td = document.createElement('td'); 
+                                    td.innerHTML += `<img src=${item['urlToImage']} alt="" style="width:280px"></img><br>`;
+                                    tr.appendChild(td);
+                                    newsTable.appendChild(tr);
+                                    tr = document.createElement('tr'); 
+                                    td = document.createElement('td'); 
+                                    td.innerHTML += `<p>${item['description']}</p>`;
+                                    tr.appendChild(td);
+                                    newsTable.appendChild(tr);
+                                    
 
+                                    // li.innerHTML = `<img src=${item['urlToImage']} alt="" style="width:280px"></img><br>`;
+                                    // li.innerHTML += `<a href="${item['url']}" target='_blank'>${item['title']}</a><br>`;
+                                    // li.innerHTML += `<p>${item['description']}</p>`;
+                                    // newsTable.appendChild(li);
+                            }
+                            
+                            
+
+                        }
+                        if(newsTable.innerHTML == ""){
+                            $('#newsTable').html(`<tr><td>Sorry, no news were found. Try again later.</td></tr>`);
                         }
              }
 
@@ -199,16 +225,35 @@ function getNobels(country){
 
             if(result.status.name == "ok"){
 
+                var nobelTable =  document.getElementById('nobelTable');
+                nobelTable.innerHTML = "";
+
                 if(result['data']['laureates'].length == 0){
-                    $('#nobel').html("No nobel prize winners.")
+                    $('#nobelTable').html(`<p>No nobel prize winners.</p>`)
                 }else{
-                var list3 =  document.getElementById('nobel');
-                    list3.innerHTML = "";
                     for (var i = 0; i < result['data']['laureates'].length; i++) {
-                        li = document.createElement('li');
-                        li.innerHTML = `${result['data']['laureates'][i]['fullName']['en']} in ${result['data']['laureates'][i]['nobelPrizes'][0]['awardYear']} for ${result['data']['laureates'][i]['nobelPrizes'][0]['category']['en']}`;
-                        list3.appendChild(li);
-                    }
+                   
+                        tr = document.createElement('tr'); 
+                        td = document.createElement('td'); 
+                        td.innerHTML = result['data']['laureates'][i]['fullName']['en'];
+                        tr.appendChild(td);
+                        
+                        td = document.createElement('td'); 
+                        td.innerHTML = result['data']['laureates'][i]['nobelPrizes'][0]['awardYear'];
+                        tr.appendChild(td);
+                         
+                        td = document.createElement('td'); 
+                        td.innerHTML = result['data']['laureates'][i]['nobelPrizes'][0]['category']['en'];
+                        tr.appendChild(td);
+                        nobelTable.appendChild(tr);
+
+                    
+                }
+                    // for (var i = 0; i < result['data']['laureates'].length; i++) {
+                    //     li = document.createElement('li');
+                    //     li.innerHTML = `${result['data']['laureates'][i]['fullName']['en']} in ${result['data']['laureates'][i]['nobelPrizes'][0]['awardYear']} for ${result['data']['laureates'][i]['nobelPrizes'][0]['category']['en']}`;
+                    //     list3.appendChild(li);
+                    // }
                 }
                 
              }
@@ -234,11 +279,24 @@ function getPhotos(country){
 
             if(result.status.name == "ok"){
 
-                var listPhotos =  document.getElementById('photo');
-                        listPhotos.innerHTML = "";
-                        for(let item of result['data']['results']){                      
-                            listPhotos.innerHTML += `<img src=${item['urls']['small']} alt="" ></img>`;
-                        }
+                var photosTable =  document.getElementById('photosTable');
+                photosTable.innerHTML = "";
+
+                for(let i = 0; i<result['data']['results'].length; i+=2){
+                    let second = i+1;
+                    tr = document.createElement('tr'); 
+                    td = document.createElement('td'); 
+                    td.innerHTML = `<img src=${result['data']['results'][i]['urls']['small']} alt="" width="350px"></img>`;
+                    tr.appendChild(td);
+                    td = document.createElement('td'); 
+                    td.innerHTML = `<img src=${result['data']['results'][second]['urls']['small']} alt="" width="350px"></img>`;
+                    tr.appendChild(td);
+                    photosTable.appendChild(tr);
+                }
+
+                // for(let item of result['data']['results']){                      
+                //     listPhotos.innerHTML += `<img src=${item['urls']['small']} alt="" ></img>`;
+                // }
   
              }
 
@@ -423,35 +481,35 @@ function getGeneral(country_iso){
 
                 //Restcountries
                 $('#countryName').html(result['data']['country']["name"]);
-                $('#capital').html("Capital: " + result['data']['country']["capital"]);
-                $('#continent').html("Continent: " + result['data']['country']["subregion"]);
-                $('#population').html("Population: " + nf.format(result['data']['country']["population"]));
+                $('#capital').html(result['data']['country']["capital"]);
+                $('#continent').html(result['data']['country']["subregion"]);
+                $('#population').html(nf.format(result['data']['country']["population"]));
 
                 var para =  document.getElementById('language');
                 para.innerHTML = "";
-                para.innerHTML = "Languages: ";
+                
                 for (var i = 0; i < result['data']['country']['languages'].length; i++) {
                     span = document.createElement('span');
                     span.innerText = `| ${result['data']['country']['languages'][i]['name']} | `;
                     para.appendChild(span);
                 }
 
-                $('#area').html("Area: " + nf.format(result['data']['country']["area"]) + " km<sup>2</sup>");
-                $('#currency').html("Currency: " + result['data']['country']["currencies"][0]["name"]);
+                $('#area').html(nf.format(result['data']['country']["area"]) + " km<sup>2</sup>");
+                $('#currency').html(result['data']['country']["currencies"][0]["name"]);
                 var currency = result['data']['exchange']['rates'][result['data']['country']["currencies"][0]["code"]];
                 var fixed = currency.toFixed(2);
                 $('#exchange').html("One USD is worth "+ fixed +" "+ result['data']['country']["currencies"][0]["code"]);
                 $('#flagImg').attr({src: result['data']['country']['flag'], style: "width:30px"});
-                $('#weather').html("Temperature: " + result['data']['weather']['main']['temp'] + "&#8451; " + result['data']['weather']['weather'][0]['description']);
-                $('#phone').html("Phone prefix: " + result['data']['country']["callingCodes"][0]);
-                $('#gini').html("Gini coefficient: " + result['data']['country']["gini"]);
+                $('#weather').html(result['data']['weather']['main']['temp'] + "&#8451; " + result['data']['weather']['weather'][0]['description']);
+                $('#phone').html(result['data']['country']["callingCodes"][0]);
+                $('#gini').html(result['data']['country']["gini"]);
 
                 //Opencage
                 if(result['data']['opencage']){
                     var sunrise = new Date((result['data']['opencage']['results'][0]['annotations']['sun']['rise']['apparent'] + result['data']['opencage']['results'][0]['annotations']['timezone']['offset_sec'])*1000);
                     var sunset = new Date((result['data']['opencage']['results'][0]['annotations']['sun']['set']['apparent']+ result['data']['opencage']['results'][0]['annotations']['timezone']['offset_sec'])*1000);
-                $('#driving').html("Driving on the "+ result['data']['opencage']['results'][0]['annotations']['roadinfo']['drive_on']+" side");
-                $('#localTime').html("Local date and time is "+ new Date(new Date().getTime() + result['data']['opencage']['results'][0]['annotations']['timezone']['offset_sec']*1000).toString().substr(0,25));
+                $('#driving').html("On the "+ result['data']['opencage']['results'][0]['annotations']['roadinfo']['drive_on']+" side");
+                $('#localTime').html(new Date(new Date().getTime() + result['data']['opencage']['results'][0]['annotations']['timezone']['offset_sec']*1000).toString().substr(0,25));
                 $('#sunrise').html("Sun rises at "+ sunrise.toString().substr(16,8));
                 $('#sunset').html("Sun sets at "+ sunset.toString().substr(16,8));
                 }else{
@@ -461,18 +519,21 @@ function getGeneral(country_iso){
                     $('#sunset').html(""); 
                 }
 
-                var greenIcon = new L.Icon({
-                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
-                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-                    iconSize: [35, 51],
-                    iconAnchor: [12, 41],
-                    popupAnchor: [1, -34],
-                    shadowSize: [41, 41]
+                var myIcon = L.Icon.extend({
+                    options: {
+                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                        iconSize:     [35, 42],
+                        shadowSize:   [41, 41],
+                        iconAnchor:   [12, 41],
+                        shadowAnchor: [4, 62],
+                        popupAnchor:  [1, -34]
+                    }
                 });
+                var capital = new myIcon({iconUrl: 'capital.png'})
 
                 var marker;
                 if(result['data']['opencage'] != null){
-                    marker = L.marker([result['data']['opencage']['results'][0]['geometry']['lat'], result['data']['opencage']['results'][0]['geometry']['lng']], {icon: greenIcon}).bindPopup(`This is the capital city, ${result['data']['opencage']['results'][0]['components']['city']}!`);
+                    marker = L.marker([result['data']['opencage']['results'][0]['geometry']['lat'], result['data']['opencage']['results'][0]['geometry']['lng']], {icon: capital}).bindPopup(`This is the capital city, ${result['data']['opencage']['results'][0]['components']['city']}!`);
                     markers.addLayer(marker);
                 }
   
@@ -499,33 +560,47 @@ function getTriposo(country_iso){
 
             if(result.status.name == "ok"){
 
-                var goldIcon = new L.Icon({
-                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-gold.png',
-                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-                    iconSize: [20, 33],
-                    iconAnchor: [12, 41],
-                    popupAnchor: [1, -34],
-                    shadowSize: [41, 41]
+                var myIcon = L.Icon.extend({
+                    options: {
+                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                        iconSize:     [35, 42],
+                        shadowSize:   [41, 41],
+                        iconAnchor:   [12, 41],
+                        shadowAnchor: [4, 62],
+                        popupAnchor:  [1, -34]
+                    }
                 });
 
-                var redIcon = new L.Icon({
-                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
-                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-                    iconSize: [20, 33],
-                    iconAnchor: [12, 41],
-                    popupAnchor: [1, -34],
-                    shadowSize: [41, 41]
-                });
+                var city = new myIcon({iconUrl: 'city.png'}),
+                    attraction = new myIcon({iconUrl: 'attraction.png'}),
+                    island = new myIcon({iconUrl: 'island.png'}),
+                    region = new myIcon({iconUrl: 'region.png'});
 
 
+                
                 var marker;
+                
                 for (let item of result['data']['attractions']['results']) {
-                    marker = L.marker([item['coordinates']['latitude'], item['coordinates']['longitude']], {icon: goldIcon}).bindPopup(`Attraction: ${item['name']} <br> ${item['snippet']}`);
+                    var popup = L.popup({maxHeight: 225}).setContent(`<h4>${item['name']}</h4> <p>${item['intro']}</p> <img src=${item['images'][0]['source_url']} width="270" height="150">`);
+                    marker = L.marker([item['coordinates']['latitude'], item['coordinates']['longitude']], {icon: attraction}).bindPopup(popup);
                     markers.addLayer(marker);
-                        }
+                    }
 
                 for (let item of result['data']['popularCities']['results']) {
-                    marker = L.marker([item['coordinates']['latitude'], item['coordinates']['longitude']], {icon: redIcon}).bindPopup(`City: ${item['name']} <br> ${item['snippet']}`);
+                    var popup = L.popup({maxHeight: 225}).setContent(`<h4>${item['name']}</h4> <p>${item['intro']}</p> <img src=${item['images'][0]['source_url']} width="270" height="150">`);
+                    marker = L.marker([item['coordinates']['latitude'], item['coordinates']['longitude']], {icon: city}).bindPopup(popup);
+                    markers.addLayer(marker);
+                    }
+                for (let item of result['data']['regions']['results']) {
+                    
+                    var popup = L.popup({maxHeight: 225}).setContent(`<h4>${item['name']}</h4> <p>${item['intro']}</p> <img src=${item['images'][0]['source_url']} width="270" height="150">`);
+                    marker = L.marker([item['coordinates']['latitude'], item['coordinates']['longitude']], {icon: region}).bindPopup(popup);
+                    markers.addLayer(marker);
+                    }
+
+                for (let item of result['data']['islands']['results']) {
+                    var popup = L.popup({maxHeight: 225}).setContent(`<h4>${item['name']}</h4> <p>${item['intro']}</p> <img src=${item['images'][0]['source_url']} width="270" height="150">`);
+                    marker = L.marker([item['coordinates']['latitude'], item['coordinates']['longitude']], {icon: island}).bindPopup(popup);
                     markers.addLayer(marker);
                     }
 
@@ -587,11 +662,11 @@ function selectCountry(country, country_iso) {
     console.log(country_iso);
 
     getBorders(country, country_iso);
-    getGeneral(country_iso);
+    //getGeneral(country_iso);
     // getTriposo(country_iso);
-    // getNews(country);
-    // getNobels(country);
-    // getPhotos(country);
+     //getNews(country);
+    //getNobels(country);
+     getPhotos(country);
     // getWiki(country);
     // getCorona(country);
     // getCities(country);
