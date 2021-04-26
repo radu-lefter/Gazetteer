@@ -10,7 +10,7 @@ body {
     top:115px;
     left: 20px;
     width: 120px;
-    background-color: rgb(9, 134, 172);
+    
 }
 
 #btnWiki{
@@ -90,10 +90,7 @@ html,body, #wrapper {
     left: 0px;
 }
 
-#loading{
-    width: 380px;
-    height: auto;
-}
+
 
 #mapId{ 
     height: 100%;
@@ -110,10 +107,6 @@ html,body, #wrapper {
     width: auto;
 }
 
-/* nav{
-    height: 10%;
-    width: 100vw;
-} */
 
 
  #flagImg {
@@ -121,72 +114,56 @@ html,body, #wrapper {
     height: auto;
  }
 
- #photoImg{
-    width: 385px;
-}
 
 
-
-.modal.left .modal-dialog {
-    position: fixed;
-    margin: auto;
-    width: 420px;
-    height: 100%;
-    -webkit-transform: translate3d(0%, 0, 0);
-    -ms-transform: translate3d(0%, 0, 0);
-    -o-transform: translate3d(0%, 0, 0);
-    transform: translate3d(0%, 0, 0);
-}
-
-.modal.left .modal-content {
-    height: 100%;
-    overflow-y: auto;
-}
-
-.modal.left .modal-body {
-    padding: 15px 15px 80px;
-}
-
-.modal.left.fade .modal-dialog {
-    left: -320px;
-    -webkit-transition: opacity 0.3s linear, left 0.3s ease-out;
-    -moz-transition: opacity 0.3s linear, left 0.3s ease-out;
-    -o-transition: opacity 0.3s linear, left 0.3s ease-out;
-    transition: opacity 0.3s linear, left 0.3s ease-out;
-}
-
-
-.modal.left.fade.show .modal-dialog {
-    left: 0;
-}
-
-.modal-body > #photoImg {
-    display: block;
+#video iframe{
+    display:block;
     margin-left: auto;
     margin-right: auto;
 }
 
-
-
-@media only screen and (max-width: 600px) {
-    .modal.left .modal-dialog {
-        width: 250px;
-    }
-    #photoImg{
-        width: 220px;
-    }
-
-    #iframe_1{
-        width: 220px;
-    }
-
-    #iframe_2{
-        width: 220px;
-    }
-
-    #loading{
-        width: 220px;
-        height: auto;
-    }
-    
+#camera iframe {
+    display:block;
+    margin-left: auto;
+    margin-right: auto;
 }
+
+#camLoc{
+    text-align: center;
+}
+
+
+
+
+
+/*Photo Gallery*/
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+  }
+
+  .column {
+    flex: 50%;
+    max-width: 50%;
+  }
+
+  .column img {
+    margin-top: 8px;
+    vertical-align: middle;
+    width: 100%;
+  }
+
+  @media screen and (max-width: 600px) {
+    .column {
+      flex: 100%;
+      max-width: 100%;
+    }
+
+    iframe{
+        width:auto;
+    } 
+  }
+
+
+
