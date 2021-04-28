@@ -1,4 +1,9 @@
 //Set buttons for showing modal
+
+$("#btnSideModal").click(function() {
+    $('#buttonsModal').modal('show');
+  });
+
 $("#btnGeneral").click(function() {
     $('#generalModal').modal('show');
   });
@@ -73,7 +78,14 @@ $.ajax({
 
 
 //Create the map
-var mymap = L.map('mapId').fitWorld();
+var mymap = L.map('mapId', {
+    
+    zoomControl: false
+}).fitWorld();
+
+L.control.zoom({
+    position: 'bottomright'
+}).addTo(mymap);
 
 //Set map to users current location
 mymap.locate({setView: true, maxZoom: 5});
@@ -324,7 +336,9 @@ function getCorona(country){
 
             if(result.status.name == "ok"){
 
-                if(result['data']["cases"]){
+                if(!result['data']["cases"]){
+                    $('#covidTable').html(`<tr><td>No data found for Covid cases.</td><td></td></tr>`)
+                }else{
                     $('#covidCountry').html(`Covid statistics for ${result['data']["country"]}`);
                     $('#cases').html(nf.format(result['data']["cases"]));
                     $('#recovered').html(nf.format(result['data']["recovered"]));
@@ -333,8 +347,6 @@ function getCorona(country){
                     $('#recoveredToday').html(nf.format(result['data']["todayRecovered"]));
                     $('#casesToday').html(nf.format(result['data']["todayCases"]));
                     $('#activeCases').html(nf.format(result['data']["active"]));
-                    }else{
-                        $('#covidTable').html(`<p>No data found for Covid cases.</p>`)
                     }
 
   
@@ -357,13 +369,15 @@ function getCities(country){
         },
         success: function(result) {
 
-            //console.log(result);
+            console.log(result);
 
             if(result.status.name == "ok"){
 
                 var citiesTable =  document.getElementById('citiesTable');
                 citiesTable.innerHTML = "";
-                        if(result['data']){
+                    if(result['data'] == null){
+                        $('#citiesTable').html(`<tr><td>No data was found for ${country}</td><td></td></tr>`)
+                    }else{
 
                             let data = [];
                             for (let item of result['data']['data']) {
@@ -372,7 +386,9 @@ function getCities(country){
 
                             data.sort((a, b) => parseFloat(b.population) - parseFloat(a.population));
 
-                            if(data.length == 0){
+                            console.log(data);
+
+                            if(data == null){
                                 $('#citiesTable').html(`<tr>No data for this country's cities.</tr>`)
                             }else{
                                 for (var i in data) {
@@ -395,7 +411,7 @@ function getCities(country){
                         
                         }
   
-             }
+                    }
             }
 
         },
@@ -632,17 +648,17 @@ function getBorders(country, country_iso){
 
 function selectCountry(country, country_iso) {
 
-    getBorders(country, country_iso);
-    getGeneral(country_iso);
-    getTriposo(country_iso);
-    getNews(country);
-    getNobels(country);
-    getPhotos(country);
-    getWiki(country);
-    getCorona(country);
-    getCities(country);
-    getYoutube(country);
-    getCamera(country_iso);
+     getBorders(country, country_iso);
+    // getGeneral(country_iso);
+    // getTriposo(country_iso);
+    // getNews(country);
+    // getNobels(country);
+    // getPhotos(country);
+    // getWiki(country);
+    // getCorona(country);
+     getCities(country);
+    // getYoutube(country);
+    // getCamera(country_iso);
 
 
 };

@@ -4,78 +4,20 @@ body {
     margin: 0;
 }
 
-#btnGeneral{
+#btnSideModal{
     position: absolute;
     z-index: 3;
-    top:115px;
+    top:20px;
     left: 20px;
-    width: 120px;
+    width: 100px;
     
 }
 
-#btnWiki{
-    position: absolute;
-    z-index: 3;
-    top:160px;
-    left: 20px;
-    width: 120px;
+.btn-custom{
+    width: 100px;
+    margin-bottom: 5px;
 }
 
-#btnPhotos{
-    position: absolute;
-    z-index: 3;
-    top:205px;
-    left: 20px;
-    width: 120px;
-}
-
-#btnCities{
-    position: absolute;
-    z-index: 3;
-    top:250px;
-    left: 20px;
-    width: 120px;
-}
-
-#btnNobel{
-    position: absolute;
-    z-index: 3;
-    top:295px;
-    left: 20px;
-    width: 120px;
-}
-
-#btnNews{
-    position: absolute;
-    z-index: 3;
-    top:340px;
-    left: 20px;
-    width: 120px;
-}
-
-#btnCovid{
-    position: absolute;
-    z-index: 3;
-    top:385px;
-    left: 20px;
-    width: 120px;
-}
-
-#btnYoutube{
-    position: absolute;
-    z-index: 3;
-    top:430px;
-    left: 20px;
-    width: 120px;
-}
-
-#btnCamera{
-    position: absolute;
-    z-index: 3;
-    top:475px;
-    left: 20px;
-    width: 120px;
-}
 
 html,body, #wrapper {
     height: 100%;
@@ -90,6 +32,47 @@ html,body, #wrapper {
     left: 0px;
 }
 
+/*Side modal*/
+
+
+.modal.left_modal{
+    position: fixed;
+    z-index: 99999;
+  }
+  .modal.left_modal .modal-dialog{
+    position: fixed;
+    margin: auto;
+    width: 140px;
+    /* height: 100%; */
+    -webkit-transform: translate3d(0%, 0, 0);
+        -ms-transform: translate3d(0%, 0, 0);
+         -o-transform: translate3d(0%, 0, 0);
+            transform: translate3d(0%, 0, 0);
+  }
+  
+
+  .modal.left_modal .modal-content{
+      height: 100vh !important;
+  }
+ 
+  
+  .modal-backdrop {
+      display: none;
+     
+  }
+  
+  .modal.left_modal.fade .modal-dialog{
+    left: -50%;
+    -webkit-transition: opacity 0.3s linear, left 0.3s ease-out;
+    -moz-transition: opacity 0.3s linear, left 0.3s ease-out;
+    -o-transition: opacity 0.3s linear, left 0.3s ease-out;
+    transition: opacity 0.3s linear, left 0.3s ease-out;
+  }
+  
+  .modal.left_modal.fade.show .modal-dialog{
+    left: 0;
+    box-shadow: 0px 0px 19px rgba(0,0,0,.5);
+  }
 
 
 #mapId{ 
@@ -103,8 +86,8 @@ html,body, #wrapper {
     position: absolute;
     z-index: 99999;
     top:20px;
-    left: 50px;
-    width: auto;
+    left: 140px;
+    width: 200px;
 }
 
 
@@ -131,8 +114,6 @@ html,body, #wrapper {
 #camLoc{
     text-align: center;
 }
-
-
 
 
 

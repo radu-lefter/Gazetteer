@@ -7,7 +7,34 @@ if($_REQUEST['country'] == "United States"){
 	$country_cities = 'United States of America';
 }else if($_REQUEST['country'] == "United Kingdom"){
 	$country_cities = 'United Kingdom of Great Britain and Northern Ireland';
-}else{
+}else if($_REQUEST['country'] == "Iran"){
+	$country_cities = 'Iran (Islamic Republic of)';
+}else if($_REQUEST['country'] == "North Korea"){
+	$country_cities = "Democratic People's Republic of Korea";
+}else if($_REQUEST['country'] == "Eswatini"){
+	$country_cities = "Swaziland";
+}else if($_REQUEST['country'] == "Falkland Islands"){
+	$country_cities = "Falkland Islands (Malvinas)";
+}else if($_REQUEST['country'] == "Korea"){
+	$country_cities = "Republic of Korea";
+}else if($_REQUEST['country'] == "Palestine"){
+	$country_cities = "State of Palestine";
+}else if($_REQUEST['country'] == "Moldova"){
+	$country_cities = "Republic of Moldova";
+}else if($_REQUEST['country'] == "South Sudan"){
+	$country_cities = "Republic of South Sudan";
+}else if($_REQUEST['country'] == "Russia"){
+	$country_cities = "Russian Federation";
+}else if($_REQUEST['country'] == "Macedonia"){
+	$country_cities = "TFYR of Macedonia";
+}else if($_REQUEST['country'] == "East Timor"){
+	$country_cities = "Timor-Leste";
+}else if($_REQUEST['country'] == "Tanzania"){
+	$country_cities = "United Republic of Tanzania";
+}else if($_REQUEST['country'] == "Venezuela"){
+	$country_cities = "Venezuela (Bolivarian Republic of)";
+}
+else{
 	$country_cities = $_REQUEST['country'];
 }
 
@@ -45,4 +72,7 @@ $ch = curl_init();
 
 	echo json_encode($output);
 
-?>
+?> 
+
+
+
