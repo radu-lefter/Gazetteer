@@ -4,7 +4,7 @@ $executionStartTime = microtime(true) / 1000;
 $country = preg_replace('/\s+/', '-', $_REQUEST['country']);
 $date = date("Y-m-d", strtotime("-1 months"));
 
-$url = "https://newsapi.org/v2/everything?q={$country}&from={$date}&sortBy=popularity&apiKey=130f57bb770e4126ab3b0d2e2ec5e2a8";
+$url = "https://newsapi.org/v2/everything?q={$country}&sources=reuters,bbc&from={$date}&sortBy=popularity&apiKey=130f57bb770e4126ab3b0d2e2ec5e2a8";
 
 
 $ch = curl_init();

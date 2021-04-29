@@ -45,6 +45,7 @@ $(".button_close").click(function() {
 });
 
 
+
 //Populate the select list
 
 let dropdown = $('#countryDropdown');
@@ -53,6 +54,7 @@ dropdown.empty();
 
 dropdown.append('<option selected="true" value="dummy" disabled>Choose country</option>');
 dropdown.prop('selectedIndex', 0);
+
 
 
 $.ajax({
@@ -108,6 +110,8 @@ function getCoords(position){
             if(response){
                 selectCountry(response["data"]["results"][0]["components"]["country"], response["data"]["results"][0]["components"]["ISO_3166-1_alpha-2"]);
             }
+            $("#btnSideModal").css("display", "block");
+            $("#countryDropdown").css("left", "140px");
            
            
         },
@@ -119,7 +123,7 @@ function getCoords(position){
 
 if (window.navigator.geolocation) {
     window.navigator.geolocation.getCurrentPosition(getCoords, console.log);
-
+    //$("#btnSideModal").css("display", "block");
    } 
 
 
@@ -136,7 +140,8 @@ $('#countryDropdown').change(function(){
     let country = $('select option:selected').text();
     let country_iso = $('select option:selected').val();
     selectCountry(country, country_iso);
-    
+    $("#btnSideModal").css("display", "block");
+    $("#countryDropdown").css("left", "140px");
 });
 
 
@@ -158,7 +163,7 @@ function getNews(country){
         },
         success: function(result) {
 
-            //console.log(result);
+            console.log(result);
 
             if(result.status.name == "ok"){
 
@@ -167,7 +172,6 @@ function getNews(country){
                         newsTable.innerHTML = "";
                         
                         for(let item of result['data']['articles']){
-                            if(item['source']['id'] == "reuters" || item['source']['id'] == "bbc-news" || item['source']['id'] == "cnn"){
                                     
                                     tr = document.createElement('tr'); 
                                     td = document.createElement('td'); 
@@ -184,10 +188,6 @@ function getNews(country){
                                     td.innerHTML += `<p>${item['description']}</p>`;
                                     tr.appendChild(td);
                                     newsTable.appendChild(tr);
-
-                            }
-                            
-                            
 
                         }
                         if(newsTable.innerHTML == ""){
@@ -212,7 +212,7 @@ function getNobels(country){
         },
         success: function(result) {
 
-            //console.log(result);
+            console.log(result);
 
             if(result.status.name == "ok"){
 
@@ -262,7 +262,7 @@ function getPhotos(country){
         },
         success: function(result) {
 
-            //console.log(result);
+            console.log(result);
 
             if(result.status.name == "ok"){
 
@@ -307,7 +307,7 @@ function getWiki(country){
         },
         success: function(result) {
 
-            //console.log(result);
+            console.log(result);
 
             if(result.status.name == "ok"){
 
@@ -332,7 +332,7 @@ function getCorona(country){
         },
         success: function(result) {
 
-            //console.log(result);
+            console.log(result);
 
             if(result.status.name == "ok"){
 
@@ -431,7 +431,7 @@ function getYoutube(country){
         },
         success: function(result) {
 
-            //console.log(result);
+            console.log(result);
 
             if(result.status.name == "ok"){
 
@@ -460,7 +460,7 @@ function getCamera(country_iso){
         },
         success: function(result) {
 
-            //console.log(result);
+            console.log(result);
 
             if(result['data']['result']['webcams'][0] == undefined){
                 $('#camera').html("<p>Sorry, camera not available at the moment.</p>");
@@ -487,7 +487,7 @@ function getGeneral(country_iso){
         },
         success: function(result) {
 
-            //console.log(result);
+            console.log(result);
 
             if(result.status.name == "ok"){
 
@@ -552,7 +552,7 @@ function getTriposo(country_iso){
         },
         success: function(result) {
 
-            //console.log(result);
+            console.log(result);
 
             if(result.status.name == "ok"){
 
@@ -577,25 +577,25 @@ function getTriposo(country_iso){
                 var marker;
                 
                 for (let item of result['data']['attractions']['results']) {
-                    var popup = L.popup({maxHeight: 225}).setContent(`<h4>${item['name']}</h4> <p>${item['intro']}</p> <img src=${item['images'][0]['source_url']} width="270" height="150">`);
+                    var popup = L.popup({maxHeight: 225}).setContent(`<h4>${item['name']}</h4> <p>${item['intro']}</p> <img src=${item['images'][0] ? item['images'][0]['source_url'] : 'https://upload.wikimedia.org/wikipedia/commons/6/6c/No_image_3x4.svg'} width="270" height="150">`);
                     marker = L.marker([item['coordinates']['latitude'], item['coordinates']['longitude']], {icon: attraction}).bindPopup(popup);
                     markers.addLayer(marker);
                     }
 
                 for (let item of result['data']['popularCities']['results']) {
-                    var popup = L.popup({maxHeight: 225}).setContent(`<h4>${item['name']}</h4> <p>${item['intro']}</p> <img src=${item['images'][0]['source_url']} width="270" height="150">`);
+                    var popup = L.popup({maxHeight: 225}).setContent(`<h4>${item['name']}</h4> <p>${item['intro']}</p> <img src=${item['images'][0] ? item['images'][0]['source_url'] : 'https://upload.wikimedia.org/wikipedia/commons/6/6c/No_image_3x4.svg'} width="270" height="150">`);
                     marker = L.marker([item['coordinates']['latitude'], item['coordinates']['longitude']], {icon: city}).bindPopup(popup);
                     markers.addLayer(marker);
                     }
                 for (let item of result['data']['regions']['results']) {
                     
-                    var popup = L.popup({maxHeight: 225}).setContent(`<h4>${item['name']}</h4> <p>${item['intro']}</p> <img src=${item['images'][0]['source_url']} width="270" height="150">`);
+                    var popup = L.popup({maxHeight: 225}).setContent(`<h4>${item['name']}</h4> <p>${item['intro']}</p> <img src=${item['images'][0] ? item['images'][0]['source_url'] : 'https://upload.wikimedia.org/wikipedia/commons/6/6c/No_image_3x4.svg'} width="270" height="150">`);
                     marker = L.marker([item['coordinates']['latitude'], item['coordinates']['longitude']], {icon: region}).bindPopup(popup);
                     markers.addLayer(marker);
                     }
 
                 for (let item of result['data']['islands']['results']) {
-                    var popup = L.popup({maxHeight: 225}).setContent(`<h4>${item['name']}</h4> <p>${item['intro']}</p> <img src=${item['images'][0]['source_url']} width="270" height="150">`);
+                    var popup = L.popup({maxHeight: 225}).setContent(`<h4>${item['name']}</h4> <p>${item['intro']}</p> <img src=${item['images'][0] ? item['images'][0]['source_url'] : 'https://upload.wikimedia.org/wikipedia/commons/6/6c/No_image_3x4.svg'} width="270" height="150">`);
                     marker = L.marker([item['coordinates']['latitude'], item['coordinates']['longitude']], {icon: island}).bindPopup(popup);
                     markers.addLayer(marker);
                     }
@@ -653,10 +653,10 @@ function selectCountry(country, country_iso) {
     // getTriposo(country_iso);
     // getNews(country);
     // getNobels(country);
-    // getPhotos(country);
+     getPhotos(country);
     // getWiki(country);
     // getCorona(country);
-     getCities(country);
+    // getCities(country);
     // getYoutube(country);
     // getCamera(country_iso);
 
