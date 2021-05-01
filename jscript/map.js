@@ -163,7 +163,7 @@ function getNews(country){
         },
         success: function(result) {
 
-            console.log(result);
+            //console.log(result);
 
             if(result.status.name == "ok"){
 
@@ -175,12 +175,13 @@ function getNews(country){
                                     
                                     tr = document.createElement('tr'); 
                                     td = document.createElement('td'); 
+                                    td.className = "h4";
                                     td.innerHTML += `<a href="${item['url']}" target='_blank'>${item['title']}</a><br>`;
                                     tr.appendChild(td);
                                     newsTable.appendChild(tr);
                                     tr = document.createElement('tr'); 
                                     td = document.createElement('td'); 
-                                    td.innerHTML += `<img src=${item['urlToImage']} alt="" style="width:280px"></img><br>`;
+                                    td.innerHTML += `<img src=${item['urlToImage'] ? item['urlToImage'] : 'https://upload.wikimedia.org/wikipedia/commons/6/6c/No_image_3x4.svg'} alt="" style="width:280px"></img><br>`;
                                     tr.appendChild(td);
                                     newsTable.appendChild(tr);
                                     tr = document.createElement('tr'); 
@@ -188,8 +189,9 @@ function getNews(country){
                                     td.innerHTML += `<p>${item['description']}</p>`;
                                     tr.appendChild(td);
                                     newsTable.appendChild(tr);
-
+                                    
                         }
+
                         if(newsTable.innerHTML == ""){
                             $('#newsTable').html(`<tr><td>Sorry, no news were found. Try again later.</td></tr>`);
                         }
@@ -212,7 +214,7 @@ function getNobels(country){
         },
         success: function(result) {
 
-            console.log(result);
+            //console.log(result);
 
             if(result.status.name == "ok"){
 
@@ -262,7 +264,7 @@ function getPhotos(country){
         },
         success: function(result) {
 
-            console.log(result);
+            //console.log(result);
 
             if(result.status.name == "ok"){
 
@@ -278,10 +280,11 @@ function getPhotos(country){
                      
                     div1.innerHTML += `<img src=${result['data']['results'][i]['urls']['small']} alt=""></img>`;
                     
+                    if(result['data']['results'][second] != undefined){
+                        div2.innerHTML += `<img src=${result['data']['results'][second]['urls']['small']} alt=""></img>`;
+                    }
                     
-                    div2.innerHTML += `<img src=${result['data']['results'][second]['urls']['small']} alt=""></img>`;
-                   
-                    
+                     
                 }
 
                 photosTable.appendChild(div1);
@@ -307,7 +310,7 @@ function getWiki(country){
         },
         success: function(result) {
 
-            console.log(result);
+           //console.log(result);
 
             if(result.status.name == "ok"){
 
@@ -369,7 +372,7 @@ function getCities(country){
         },
         success: function(result) {
 
-            console.log(result);
+            //console.log(result);
 
             if(result.status.name == "ok"){
 
@@ -386,7 +389,7 @@ function getCities(country){
 
                             data.sort((a, b) => parseFloat(b.population) - parseFloat(a.population));
 
-                            console.log(data);
+                            //console.log(data);
 
                             if(data == null){
                                 $('#citiesTable').html(`<tr>No data for this country's cities.</tr>`)
@@ -431,7 +434,7 @@ function getYoutube(country){
         },
         success: function(result) {
 
-            console.log(result);
+            //console.log(result);
 
             if(result.status.name == "ok"){
 
@@ -460,14 +463,31 @@ function getCamera(country_iso){
         },
         success: function(result) {
 
-            console.log(result);
+            //console.log(result);
 
-            if(result['data']['result']['webcams'][0] == undefined){
-                $('#camera').html("<p>Sorry, camera not available at the moment.</p>");
-            } else {
-                $('#camLoc').html(result['data']['result']['webcams'][0]['location']['region']+" - "+result['data']['result']['webcams'][0]['location']['city']);
-                $('#iframe_2').attr({src: result['data']['result']['webcams'][0]['player']['year']['embed']});
-            }
+                var cameraTable =  document.getElementById('cameraTable');
+                cameraTable.innerHTML = "";
+    
+
+                for(let i = 0; i<result['data']['result']['webcams'].length; i++){
+
+                    tr = document.createElement('tr'); 
+                    td = document.createElement('td'); 
+                    td.innerHTML += `<h4> ${result['data']['result']['webcams'][i]['location']['region']} - ${result['data']['result']['webcams'][i]['location']['city']}</h4>`;
+                    tr.appendChild(td);
+                    cameraTable.appendChild(tr);
+                   
+                    tr = document.createElement('tr'); 
+                    td = document.createElement('td'); 
+                    td.innerHTML += `<iframe src=${result['data']['result']['webcams'][i]['player']['year']['embed']} width="560" height="315" frameborder="0"></iframe>`;
+                    tr.appendChild(td);
+                    cameraTable.appendChild(tr);
+                     
+                     
+                }
+                if(cameraTable.innerHTML == ""){
+                    $('#cameraTable').html(`<tr><td>Sorry, no cameras were found. Try again later.</td></tr>`);
+                }
 
 
         },
@@ -487,7 +507,7 @@ function getGeneral(country_iso){
         },
         success: function(result) {
 
-            console.log(result);
+            //console.log(result);
 
             if(result.status.name == "ok"){
 
@@ -552,7 +572,7 @@ function getTriposo(country_iso){
         },
         success: function(result) {
 
-            console.log(result);
+            //console.log(result);
 
             if(result.status.name == "ok"){
 
@@ -649,16 +669,16 @@ function getBorders(country, country_iso){
 function selectCountry(country, country_iso) {
 
      getBorders(country, country_iso);
-    // getGeneral(country_iso);
-    // getTriposo(country_iso);
-    // getNews(country);
-    // getNobels(country);
+     getGeneral(country_iso);
+     getTriposo(country_iso);
+     getNews(country);
+     getNobels(country);
      getPhotos(country);
-    // getWiki(country);
-    // getCorona(country);
-    // getCities(country);
-    // getYoutube(country);
-    // getCamera(country_iso);
+     getWiki(country);
+     getCorona(country);
+     getCities(country);
+     getYoutube(country);
+     getCamera(country_iso);
 
 
 };

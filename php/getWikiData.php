@@ -3,6 +3,16 @@
 $executionStartTime = microtime(true) / 1000;
 $country_wiki = preg_replace('/\s+/', '_', $_REQUEST['country']);
 
+if($_REQUEST['country'] == "Democratic Republic of the Congo"){
+	$country_wiki = "Democratic_Republic_of_the_Congo";
+}else if($_REQUEST['country'] == "Congo"){
+	$country_wiki = "Republic_of_the_Congo";
+}else if($_REQUEST['country'] == "Georgia"){
+	$country_wiki = "Georgia_(country)";
+}else if($_REQUEST['country'] == "Palestine"){
+	$country_wiki = "State_of_Palestine";
+}
+
 $url = "https://en.wikipedia.org/api/rest_v1/page/summary/{$country_wiki}";
 
 

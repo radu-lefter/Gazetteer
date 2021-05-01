@@ -19,7 +19,7 @@ body {
 }
 
 
-html,body, #wrapper {
+html,body {
     height: 100%;
     width: 100vw;
 }
@@ -43,7 +43,6 @@ html,body, #wrapper {
     position: fixed;
     margin: auto;
     width: 140px;
-    /* height: 100%; */
     -webkit-transform: translate3d(0%, 0, 0);
         -ms-transform: translate3d(0%, 0, 0);
          -o-transform: translate3d(0%, 0, 0);
@@ -105,20 +104,9 @@ html,body, #wrapper {
     margin-right: auto;
 }
 
-#camera iframe {
-    display:block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#camLoc{
-    text-align: center;
-}
-
-
 
 /*Photo Gallery*/
-.row {
+  .row {
     display: flex;
     flex-wrap: wrap;
     padding: 0 4px;
