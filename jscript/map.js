@@ -1,8 +1,15 @@
+//Preloader
+$(window).on('load', function () {
+    if ($('#preloader').length) {
+    $('#preloader').delay(100).fadeOut('slow', function() {$(this).remove();});
+  }
+});
+
 //Set buttons for showing modal
 
-$("#btnSideModal").click(function() {
-    $('#buttonsModal').modal('show');
-  });
+// $("#btnSideModal").click(function() {
+//     $('#buttonsModal').modal('show');
+//   });
 
 $("#btnGeneral").click(function() {
     $('#generalModal').modal('show');
@@ -51,7 +58,6 @@ $(".button_close").click(function() {
 let dropdown = $('#countryDropdown');
 
 dropdown.empty();
-
 dropdown.append('<option selected="true" value="dummy" disabled>Choose country</option>');
 dropdown.prop('selectedIndex', 0);
 
@@ -86,10 +92,10 @@ var mymap = L.map('mapId', {
 }).fitWorld();
 
 L.control.zoom({
-    position: 'bottomright'
+    position: 'topleft'
 }).addTo(mymap);
 
-//Set map to users current location
+//Set map to user's current location
 mymap.locate({setView: true, maxZoom: 5});
 
 function getCoords(position){
@@ -108,10 +114,11 @@ function getCoords(position){
     
     
             if(response){
+                dropdown.prop('value', response["data"]["results"][0]["components"]["ISO_3166-1_alpha-2"]);
                 selectCountry(response["data"]["results"][0]["components"]["country"], response["data"]["results"][0]["components"]["ISO_3166-1_alpha-2"]);
             }
-            $("#btnSideModal").css("display", "block");
-            $("#countryDropdown").css("left", "140px");
+            // $("#btnSideModal").css("display", "block");
+            // $("#countryDropdown").css("left", "140px");
            
            
         },
@@ -133,6 +140,48 @@ L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_M
 	attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
 }).addTo(mymap);
 
+//Easy buttons
+
+function styleButtons(bttn){
+    bttn.button.style.width = '30px';
+    bttn.button.style.height = '30px';
+    bttn.button.style.backgroundColor = 'white';
+}
+
+styleButtons(L.easyButton('fa-flag', function(){
+    $('#generalModal').modal('show');
+}, 'General Information', {position: 'topleft'}).addTo(mymap));
+
+
+
+styleButtons(L.easyButton('fa-book-open', function(){
+    $('#wikiModal').modal('show');
+}, 'Wikipedia Snippet', {position: 'topleft'}).addTo(mymap));
+
+styleButtons(L.easyButton('fa-images', function(){
+    $('#photosModal').modal('show');
+}, 'Photos', {position: 'topleft'}).addTo(mymap));
+
+styleButtons(L.easyButton('fa-city', function(){
+    $('#citiesModal').modal('show');
+}, 'Areas and cities', {position: 'topleft'}).addTo(mymap));
+
+styleButtons(L.easyButton('fa-award', function(){
+    $('#nobelModal').modal('show');
+}, 'Nobel Laureates', {position: 'topleft'}).addTo(mymap));
+
+styleButtons(L.easyButton('fa-newspaper', function(){
+    $('#newsModal').modal('show');
+}, 'Latest News', {position: 'topleft'}).addTo(mymap));
+
+styleButtons(L.easyButton('fa-viruses', function(){
+    $('#covidModal').modal('show');
+}, 'Covid Information', {position: 'topleft'}).addTo(mymap));
+
+styleButtons(L.easyButton('fa-video', function(){
+    $('#youtubeModal').modal('show');
+}, 'Youtube Video', {position: 'topleft'}).addTo(mymap));
+
 
 
 //Add interactivity on select
@@ -140,8 +189,8 @@ $('#countryDropdown').change(function(){
     let country = $('select option:selected').text();
     let country_iso = $('select option:selected').val();
     selectCountry(country, country_iso);
-    $("#btnSideModal").css("display", "block");
-    $("#countryDropdown").css("left", "140px");
+    // $("#btnSideModal").css("display", "block");
+    // $("#countryDropdown").css("left", "140px");
 });
 
 
@@ -335,7 +384,7 @@ function getCorona(country){
         },
         success: function(result) {
 
-            console.log(result);
+            //console.log(result);
 
             if(result.status.name == "ok"){
 
@@ -463,31 +512,53 @@ function getCamera(country_iso){
         },
         success: function(result) {
 
-            //console.log(result);
+            console.log(result);
 
-                var cameraTable =  document.getElementById('cameraTable');
-                cameraTable.innerHTML = "";
+            if(result['data']['result']['webcams']){
+            var myIcon = L.Icon.extend({
+                options: {
+                    
+                    iconSize:     [35, 42],
+                    shadowSize:   [41, 41],
+                    iconAnchor:   [12, 41],
+                    shadowAnchor: [4, 62],
+                    popupAnchor:  [1, -34]
+                }
+            });
+
+            var webcam = new myIcon({iconUrl: 'webcam.png'});
+
+                let marker;
+                
+                for (let item of result['data']['result']['webcams']) {
+                    var popup = L.popup({maxHeight: 225}).setContent(`<h4>${item['title']}</h4> <iframe src=${item['player']['year']['embed']} width="300" height="145" frameborder="0"></iframe>`);
+                    marker = L.marker([item['location']['latitude'], item['location']['longitude']], {icon: webcam}).bindPopup(popup);
+                    markers.addLayer(marker);
+                    }
+                }
+                // var cameraTable =  document.getElementById('cameraTable');
+                // cameraTable.innerHTML = "";
     
 
-                for(let i = 0; i<result['data']['result']['webcams'].length; i++){
+                // for(let i = 0; i<result['data']['result']['webcams'].length; i++){
 
-                    tr = document.createElement('tr'); 
-                    td = document.createElement('td'); 
-                    td.innerHTML += `<h4> ${result['data']['result']['webcams'][i]['location']['region']} - ${result['data']['result']['webcams'][i]['location']['city']}</h4>`;
-                    tr.appendChild(td);
-                    cameraTable.appendChild(tr);
+                //     tr = document.createElement('tr'); 
+                //     td = document.createElement('td'); 
+                //     td.innerHTML += `<h4> ${result['data']['result']['webcams'][i]['location']['region']} - ${result['data']['result']['webcams'][i]['location']['city']}</h4>`;
+                //     tr.appendChild(td);
+                //     cameraTable.appendChild(tr);
                    
-                    tr = document.createElement('tr'); 
-                    td = document.createElement('td'); 
-                    td.innerHTML += `<iframe src=${result['data']['result']['webcams'][i]['player']['year']['embed']} width="560" height="315" frameborder="0"></iframe>`;
-                    tr.appendChild(td);
-                    cameraTable.appendChild(tr);
+                //     tr = document.createElement('tr'); 
+                //     td = document.createElement('td'); 
+                //     td.innerHTML += `<iframe src=${result['data']['result']['webcams'][i]['player']['year']['embed']} width="560" height="315" frameborder="0"></iframe>`;
+                //     tr.appendChild(td);
+                //     cameraTable.appendChild(tr);
                      
                      
-                }
-                if(cameraTable.innerHTML == ""){
-                    $('#cameraTable').html(`<tr><td>Sorry, no cameras were found. Try again later.</td></tr>`);
-                }
+                // }
+                // if(cameraTable.innerHTML == ""){
+                //     $('#cameraTable').html(`<tr><td>Sorry, no cameras were found. Try again later.</td></tr>`);
+                // }
 
 
         },
@@ -594,7 +665,7 @@ function getTriposo(country_iso){
 
 
                 
-                var marker;
+                let marker;
                 
                 for (let item of result['data']['attractions']['results']) {
                     var popup = L.popup({maxHeight: 225}).setContent(`<h4>${item['name']}</h4> <p>${item['intro']}</p> <img src=${item['images'][0] ? item['images'][0]['source_url'] : 'https://upload.wikimedia.org/wikipedia/commons/6/6c/No_image_3x4.svg'} width="270" height="150">`);
@@ -668,7 +739,7 @@ function getBorders(country, country_iso){
 
 function selectCountry(country, country_iso) {
 
-     getBorders(country, country_iso);
+      getBorders(country, country_iso);
      getGeneral(country_iso);
      getTriposo(country_iso);
      getNews(country);

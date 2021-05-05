@@ -6,6 +6,8 @@
 
   <link rel="stylesheet" href="leaflet/leaflet.css" />
   <script src="leaflet/leaflet.js"></script>
+  <script src="EasyButton/src/easy-button.js"></script>
+  <script src="fontawesome/js/all.js"></script>
 
   <link rel="stylesheet" href="bootstrap-5.0.0-beta3-dist/css/bootstrap.min.css">
   <script src="jscript/jquery-3.6.0.min.js"></script>
@@ -17,6 +19,8 @@
     <title>Gazetteer</title>
 </head>
 <body>
+  
+  <div id=”preloader”></div>
 
     
       <div id="mapId">
@@ -24,11 +28,11 @@
         </select>
       </div>
 
-  <button id="btnSideModal" class="btn btn-dark" >More</button>
+  <!-- <button id="btnSideModal" class="btn btn-dark" >Info</button> -->
 
   <!-- Modal Sidebar-->
 
-  <div class="modal modal_outer left_modal fade" id="buttonsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" >
+  <!-- <div class="modal modal_outer left_modal fade" id="buttonsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" >
     <div class="modal-dialog" role="document">
       
         <div class="modal-content ">
@@ -55,19 +59,16 @@
               <button class="btn btn-danger button_close" type="button"  data-dismiss="modal" >Close</button>
             </div>
 
-        </div><!-- //modal-content -->
-    </div><!-- modal-dialog -->
-</div><!-- modal -->
+        </div>
+    </div>
+</div> -->
 
-				
-			
 
-  
 
   <!--General Modal -->
     
   <div class="modal top fade" id="generalModal">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
@@ -78,7 +79,7 @@
         <div class="modal-body">
   
          
-            <table class="table table-primary table-striped text-center">
+            <table class="table table-primary table-striped">
               <thead>
                 <tr>
                   <th scope="row" colspan="2" id="countryName" class="text-center h1 bg-dark text-white"></th>
@@ -87,63 +88,63 @@
               <tbody>
                 <tr>
                   <th scope="row">Capital</th>
-                  <td id="capital"></td>
+                  <td class="text-end" id="capital"></td>
                 </tr>
                 <tr>
                   <th scope="row" >Continent</th>
-                  <td id="continent"></td>
+                  <td class="text-end" id="continent"></td>
                 </tr>
                 <tr>
                   <th scope="row">Population</th>
-                  <td id="population"></td>
+                  <td class="text-end" id="population"></td>
                 </tr>
                 <tr>
                   <th scope="row">Area</th>
-                  <td id="area"></td>
+                  <td class="text-end" id="area"></td>
                 </tr>
                 <tr>
                   <th scope="row">Languages</th>
-                  <td id="language"></td>
+                  <td class="text-end" id="language"></td>
                 </tr>
                 <tr>
                   <th scope="row">Currency</th>
-                  <td id="currency"></td>
+                  <td class="text-end" id="currency"></td>
                 </tr>
                 <tr>
                   <th scope="row">Exchange</th>
-                  <td id="exchange"></td>
+                  <td class="text-end" id="exchange"></td>
                 </tr>
                 <tr>
                   <th scope="row">Flag</th>
-                  <td id="flag"><img id="flagImg" src="" alt=""></td>
+                  <td class="text-end" id="flag"><img id="flagImg" src="" alt=""></td>
                 </tr>
                 <tr>
                   <th scope="row">Weather</th>
-                  <td id="weather"></td>
+                  <td class="text-end" id="weather"></td>
                 </tr>
                 <tr>
                   <th scope="row">Phone prefix</th>
-                  <td id="phone"></td>
+                  <td class="text-end" id="phone"></td>
                 </tr>
                 <tr>
                   <th scope="row">Gini coefficient</th>
-                  <td id="gini"></td>
+                  <td class="text-end" id="gini"></td>
                 </tr>
                 <tr>
                   <th scope="row">Driving</th>
-                  <td id="driving"></td>
+                  <td class="text-end" id="driving"></td>
                 </tr>
                 <tr>
                   <th scope="row">Local time</th>
-                  <td id="localTime"></td>
+                  <td class="text-end" id="localTime"></td>
                 </tr>
                 <tr>
                   <th scope="row">Sunrise</th>
-                  <td id="sunrise"></td>
+                  <td class="text-end" id="sunrise"></td>
                 </tr>
                 <tr>
                   <th scope="row">Sunset</th>
-                  <td id="sunset"></td>
+                  <td class="text-end" id="sunset"></td>
                 </tr>
               </tbody>
             </table>
@@ -160,7 +161,7 @@
     <!-- Wikipedia Modal -->
     
   <div class="modal top fade" id="wikiModal">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
@@ -184,7 +185,7 @@
   <!-- Photos Modal -->
     
   <div class="modal top fade" id="photosModal">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
@@ -210,21 +211,21 @@
   <!-- Cities Modal -->
     
   <div class="modal top fade" id="citiesModal">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Largest cities</h4>
+          <h4 class="modal-title">Largest area by population</h4>
           <button class="button_close" type="button" class="close" data-dismiss="modal">&times;</button>
         </div> 
         <!-- Modal body -->
         <div class="modal-body">
           
-            <table class="table table-primary table-striped text-center">
+            <table class="table table-primary table-striped">
               <thead>
                 <tr>
-                  <th scope="row" class="text-center bg-dark text-white">City</th>
-                  <th scope="row" class="text-center  bg-dark text-white">Population</th>
+                  <th scope="row" class="text-start bg-dark text-white">Area</th>
+                  <th scope="row" class="  bg-dark text-white">Population</th>
                 </tr>
               </thead>
               <tbody id="citiesTable">
@@ -243,7 +244,7 @@
   <!-- Nobel Modal -->
     
   <div class="modal top fade" id="nobelModal">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
@@ -253,12 +254,12 @@
         <!-- Modal body -->
         <div class="modal-body">
  
-            <table class="table table-primary table-striped text-center">
+            <table class="table table-primary table-striped">
               <thead>
                 <tr>
-                  <th scope="row" class="text-center bg-dark text-white">Winner</th>
-                  <th scope="row" class="text-center  bg-dark text-white">Year</th>
-                  <th scope="row" class="text-center  bg-dark text-white">Category</th>
+                  <th scope="row" class="text-start bg-dark text-white">Winner</th>
+                  <th scope="row" class="text-end  bg-dark text-white">Year</th>
+                  <th scope="row" class="text-end  bg-dark text-white">Category</th>
                 </tr>
               </thead>
               <tbody id="nobelTable">
@@ -278,7 +279,7 @@
   <!-- News Modal -->
     
   <div class="modal top fade" id="newsModal">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
@@ -311,7 +312,7 @@
   <!-- Covid Modal -->
     
   <div class="modal top fade" id="covidModal">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
@@ -321,7 +322,7 @@
         <!-- Modal body -->
         <div class="modal-body">
 
-            <table class="table table-primary table-striped text-center">
+            <table class="table table-primary table-striped">
               <thead>
                 <tr>
                   <th scope="row" colspan="2" id="covidCountry" class="text-center h1 bg-dark text-white"></th>
@@ -330,31 +331,31 @@
               <tbody id="covidTable">
                 <tr>
                   <th scope="row">Total cases</th>
-                  <td id="cases"></td>
+                  <td class="text-end" id="cases"></td>
                 </tr>
                 <tr>
                   <th scope="row" >Total deaths</th>
-                  <td id="deaths"></td>
+                  <td class="text-end" id="deaths"></td>
                 </tr>
                 <tr>
                   <th scope="row">Total recovered</th>
-                  <td id="recovered"></td>
+                  <td class="text-end" id="recovered"></td>
                 </tr>
                 <tr>
                   <th scope="row">Active cases</th>
-                  <td id="activeCases"></td>
+                  <td class="text-end" id="activeCases"></td>
                 </tr>
                 <tr>
                   <th scope="row">New cases today</th>
-                  <td id="casesToday"></td>
+                  <td class="text-end" id="casesToday"></td>
                 </tr>
                 <tr>
                   <th scope="row">Deaths today</th>
-                  <td id="deathsToday"></td>
+                  <td class="text-end" id="deathsToday"></td>
                 </tr>
                 <tr>
                   <th scope="row">Recovered today</th>
-                  <td id="recoveredToday"></td>
+                  <td class="text-end" id="recoveredToday"></td>
                 </tr>
               </tbody>
             </table>
@@ -371,7 +372,7 @@
   <!-- Youtube Modal -->
     
   <div class="modal top fade" id="youtubeModal">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
@@ -383,7 +384,7 @@
 
             
             <div id="video">
-              <iframe id="iframe_1" width="560" height="315" src="" frameborder="0"  allowfullscreen></iframe>
+              <iframe id="iframe_1" width="460" height="215" src="" frameborder="0"  allowfullscreen></iframe>
             </div>
           
         </div>   
@@ -398,7 +399,7 @@
   <!-- Camera Modal -->
     
   <div class="modal top fade" id="cameraModal">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">

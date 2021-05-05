@@ -3,7 +3,13 @@
 $executionStartTime = microtime(true) / 1000;
 $country = preg_replace('/\s+/', '-', $_REQUEST['country']);
 
-$url = "https://api.unsplash.com/search/photos?query={$country}&client_id=4BysAZ8jjWLhxY7QeQW2Yk7bhXnnlf99uTY0s0ttQTU";
+$url;
+if($country == "Central-African-Republic"){
+	$url = "https://api.unsplash.com/search/photos?query=africa&client_id=4BysAZ8jjWLhxY7QeQW2Yk7bhXnnlf99uTY0s0ttQTU";
+}else{
+	$url = "https://api.unsplash.com/search/photos?query={$country}&client_id=4BysAZ8jjWLhxY7QeQW2Yk7bhXnnlf99uTY0s0ttQTU";
+}
+
 
 
 $ch = curl_init();
