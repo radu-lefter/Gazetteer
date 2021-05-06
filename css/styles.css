@@ -44,10 +44,6 @@ body {
 
 }
 
-/* #general{
-  width: 30px;
-  height: 20px;
-} */
 
 #btnSideModal{
     position: absolute;
@@ -68,55 +64,6 @@ html,body {
     height: 100%;
     width: 100vw;
 }
-
-#button_show{
-    position: absolute;
-    display: none;
-    z-index: 3;
-    bottom:25px;
-    left: 0px;
-}
-
-/*Side modal*/
-
-
-.modal.left_modal{
-    position: fixed;
-    z-index: 99999;
-  }
-  .modal.left_modal .modal-dialog{
-    position: fixed;
-    margin: auto;
-    width: 140px;
-    -webkit-transform: translate3d(0%, 0, 0);
-        -ms-transform: translate3d(0%, 0, 0);
-         -o-transform: translate3d(0%, 0, 0);
-            transform: translate3d(0%, 0, 0);
-  }
-  
-
-  .modal.left_modal .modal-content{
-      height: 100vh !important;
-  }
- 
-  
-  .modal-backdrop {
-      display: none;
-     
-  }
-  
-  .modal.left_modal.fade .modal-dialog{
-    left: -50%;
-    -webkit-transition: opacity 0.3s linear, left 0.3s ease-out;
-    -moz-transition: opacity 0.3s linear, left 0.3s ease-out;
-    -o-transition: opacity 0.3s linear, left 0.3s ease-out;
-    transition: opacity 0.3s linear, left 0.3s ease-out;
-  }
-  
-  .modal.left_modal.fade.show .modal-dialog{
-    left: 0;
-    box-shadow: 0px 0px 19px rgba(0,0,0,.5);
-  }
 
 
 #mapId{ 

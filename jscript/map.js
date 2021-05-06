@@ -5,50 +5,14 @@ $(window).on('load', function () {
   }
 });
 
-//Set buttons for showing modal
-
-// $("#btnSideModal").click(function() {
-//     $('#buttonsModal').modal('show');
-//   });
-
-$("#btnGeneral").click(function() {
-    $('#generalModal').modal('show');
-  });
-
-$("#btnWiki").click(function() {
-    $('#wikiModal').modal('show');
-  });
-
-$("#btnPhotos").click(function() {
-    $('#photosModal').modal('show');
-  });
-
-$("#btnCities").click(function() {
-    $('#citiesModal').modal('show');
-  });
-
-$("#btnNobel").click(function() {
-    $('#nobelModal').modal('show');
-  });
-
-$("#btnNews").click(function() {
-    $('#newsModal').modal('show');
-  });
-
-$("#btnCovid").click(function() {
-    $('#covidModal').modal('show');
-  });
-
-$("#btnYoutube").click(function() {
-    $('#youtubeModal').modal('show');
-  });
-
-$("#btnCamera").click(function() {
-    $('#cameraModal').modal('show');
-  });
+//Set buttons for closing modal
 
 $(".button_close").click(function() {
     $('.modal').modal('hide');
+});
+
+$("#youtubeModal").on('hidden.bs.modal', function (e) {
+    $("#youtubeModal iframe").attr("src", $("#youtubeModal iframe").attr("src"));
 });
 
 
@@ -117,8 +81,7 @@ function getCoords(position){
                 dropdown.prop('value', response["data"]["results"][0]["components"]["ISO_3166-1_alpha-2"]);
                 selectCountry(response["data"]["results"][0]["components"]["country"], response["data"]["results"][0]["components"]["ISO_3166-1_alpha-2"]);
             }
-            // $("#btnSideModal").css("display", "block");
-            // $("#countryDropdown").css("left", "140px");
+
            
            
         },
@@ -130,7 +93,7 @@ function getCoords(position){
 
 if (window.navigator.geolocation) {
     window.navigator.geolocation.getCurrentPosition(getCoords, console.log);
-    //$("#btnSideModal").css("display", "block");
+
    } 
 
 
@@ -189,12 +152,11 @@ $('#countryDropdown').change(function(){
     let country = $('select option:selected').text();
     let country_iso = $('select option:selected').val();
     selectCountry(country, country_iso);
-    // $("#btnSideModal").css("display", "block");
-    // $("#countryDropdown").css("left", "140px");
+
 });
 
 
-//Adding border around each country and fetching data
+//Adding border around each country and creating functions for fetching data
 
 var geoson;
 var markers = L.layerGroup().addTo(mymap);
@@ -282,10 +244,12 @@ function getNobels(country){
                         
                         td = document.createElement('td'); 
                         td.innerHTML = result['data']['laureates'][i]['nobelPrizes'][0]['awardYear'];
+                        td.className = "text-end";
                         tr.appendChild(td);
                          
                         td = document.createElement('td'); 
                         td.innerHTML = result['data']['laureates'][i]['nobelPrizes'][0]['category']['en'];
+                        td.className = "text-end";
                         tr.appendChild(td);
                         nobelTable.appendChild(tr);
 
@@ -332,14 +296,12 @@ function getPhotos(country){
                     if(result['data']['results'][second] != undefined){
                         div2.innerHTML += `<img src=${result['data']['results'][second]['urls']['small']} alt=""></img>`;
                     }
-                    
-                     
+                         
                 }
 
                 photosTable.appendChild(div1);
                 photosTable.appendChild(div2);
 
-  
             }
 
         },
@@ -453,11 +415,11 @@ function getCities(country){
                                     
                                     td = document.createElement('td'); 
                                     td.innerHTML = nf.format(data[i]['population']);
+                                    td.className = "text-end";
                                     tr.appendChild(td);
                                      
                                     citiesTable.appendChild(tr);
-            
-                                
+              
                             }
 
                         
@@ -483,12 +445,100 @@ function getYoutube(country){
         },
         success: function(result) {
 
-            //console.log(result);
+            console.log(result);
 
             if(result.status.name == "ok"){
 
+
                 if(result['data']['items']){
-                    $('#iframe_1').attr({src: 'https://www.youtube.com/embed/'+ result['data']['items'][0]['id']['videoId']});
+
+                    switch(country) {
+                        case "United States":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/'+ result['data']['items'][1]['id']['videoId']});
+                          break;
+                        case "United Kingdom":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/7hrXVD_ibsI'});
+                          break;
+                        case "Falkland Islands":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/CNqfhGcBUTE'});
+                          break;
+                        case "Uzbekistan":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/xiJVQZmLaHE'});
+                          break;
+                        case "Tajikistan":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/HiY8YZsGuL4'});
+                          break;
+                        case "Turkmenistan":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/ycL_PyQzHlg'});
+                          break;
+                          case "South Sudan":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/IAH7UyI4mHM'});
+                          break;
+                          case "Sudan":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/X7To9avIQQQ'});
+                          break;
+                          case "Sri Lanka":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/buns7DpTL_I'});
+                          break;
+                          case "Suriname":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/Pa05qa67BSk'});
+                          break;
+                          case "Sweden":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/6zEIvZqs0-Y'});
+                          break;
+                          case "Swizerland":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/3ldqFSVOxIU'});
+                          break;
+                          case "Syria":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/OM9cxVKNqJ0'});
+                          break;
+                          case "Taiwan":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/A9fdHs1uxGo'});
+                          break;
+                          case "Tanzania":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/ul0oMWpieyc'});
+                          break;
+                          case "Thailand":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/vNQR3ixE8AE'});
+                          break;
+                          case "Togo":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/veBidcgHLLc'});
+                          break;
+                          case "Turkey":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/r8rZQKXijb8'});
+                          break;
+                          case "Uganda":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/e0lhCkRhv1Q'});
+                          break;
+                          case "Ukraine":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/-HMpmRc3wP0'});
+                          break;
+                          case "Uruguay":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/Ewre-H-UwXI'});
+                          break;
+                          case "Venezuela":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/nubZrHGp6q4'});
+                          break;
+                          case "Vietnam":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/3M0TmN2TsK4'});
+                          break;
+                          case "Western Sahara":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/4SakRNO_SMY'});
+                          break;
+                          case "Yemen":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/2x_XxBq4WsY'});
+                          break;
+                          case "Zambia":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/ADk8gRsuYTY'});
+                          break;
+                          case "Zimbabwe":
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/STnuiF4fKPM'});
+                          break;
+
+                        default:
+                            $('#iframe_1').attr({src: 'https://www.youtube.com/embed/'+ result['data']['items'][0]['id']['videoId']});
+                      }
+
                 } else {
                     $('#video').html("Video not found");
                 }
@@ -536,30 +586,6 @@ function getCamera(country_iso){
                     markers.addLayer(marker);
                     }
                 }
-                // var cameraTable =  document.getElementById('cameraTable');
-                // cameraTable.innerHTML = "";
-    
-
-                // for(let i = 0; i<result['data']['result']['webcams'].length; i++){
-
-                //     tr = document.createElement('tr'); 
-                //     td = document.createElement('td'); 
-                //     td.innerHTML += `<h4> ${result['data']['result']['webcams'][i]['location']['region']} - ${result['data']['result']['webcams'][i]['location']['city']}</h4>`;
-                //     tr.appendChild(td);
-                //     cameraTable.appendChild(tr);
-                   
-                //     tr = document.createElement('tr'); 
-                //     td = document.createElement('td'); 
-                //     td.innerHTML += `<iframe src=${result['data']['result']['webcams'][i]['player']['year']['embed']} width="560" height="315" frameborder="0"></iframe>`;
-                //     tr.appendChild(td);
-                //     cameraTable.appendChild(tr);
-                     
-                     
-                // }
-                // if(cameraTable.innerHTML == ""){
-                //     $('#cameraTable').html(`<tr><td>Sorry, no cameras were found. Try again later.</td></tr>`);
-                // }
-
 
         },
         error: function() {
@@ -622,8 +648,6 @@ function getGeneral(country_iso){
                     $('#sunset').html(""); 
                 }
 
-               
-  
              }
 
         },
@@ -662,7 +686,6 @@ function getTriposo(country_iso){
                     attraction = new myIcon({iconUrl: 'attraction.png'}),
                     island = new myIcon({iconUrl: 'island.png'}),
                     region = new myIcon({iconUrl: 'region.png'});
-
 
                 
                 let marker;
@@ -748,8 +771,8 @@ function selectCountry(country, country_iso) {
      getWiki(country);
      getCorona(country);
      getCities(country);
-     getYoutube(country);
-     getCamera(country_iso);
+    getYoutube(country);
+    getCamera(country_iso);
 
 
 };
